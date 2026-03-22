@@ -468,6 +468,15 @@ select option{background:var(--sur)}
   .hist-stats{grid-template-columns:1fr 1fr}
   .hist-item{padding:10px 12px;gap:10px}
   .hist-icon{width:34px;height:34px;font-size:1rem}
+  /* Pagination - mobile touch targets */
+  .pagination{flex-direction:column;align-items:center;padding:14px 10px;gap:10px}
+  .page-btns{flex-wrap:wrap;justify-content:center;gap:6px}
+  .pbtn{padding:9px 16px;font-size:.8rem;min-width:42px;min-height:42px;border-radius:10px}
+  .page-info{text-align:center;font-size:.74rem;width:100%}
+  /* mcard bottom action buttons - bigger touch targets */
+  .mright{display:flex;flex-direction:column;gap:6px;align-items:center}
+  .mright .btn{padding:8px 12px;font-size:.72rem}
+  .mdel{width:40px;height:40px}
 }
 </style>
 </head>
@@ -625,8 +634,9 @@ select option{background:var(--sur)}
         <tbody id="dtbody"></tbody>
       </table>
       <div id="empty-d" class="empty" style="display:none"><div class="ei">💸</div><p>Sin resultados.</p></div>
-      <div class="pagination" id="pagination"></div>
-    </div>
+    </div><!-- end twrap -->
+    <!-- Pagination - shown on both desktop AND mobile -->
+    <div class="pagination" id="pagination"></div>
     <!-- Mobile cards -->
     <div class="mcards" id="mcards"></div>
     <div id="empty-m" class="empty" style="display:none"><div class="ei">💸</div><p>Pulsa + para añadir.</p></div>
