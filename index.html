@@ -287,6 +287,48 @@ select option{background:var(--sur)}
 .empty{text-align:center;padding:36px;color:var(--mut)}.empty .ei{font-size:2.2rem;margin-bottom:8px}
 
 /* ── MOBILE ──────────────────────────────────── */
+/* ── REPORTES ────────────────────────────────────────────────── */
+.act-feed{display:flex;flex-direction:column;gap:0}
+.act-item{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-bottom:1px solid rgba(30,42,58,.4);transition:background .15s}
+.act-item:last-child{border-bottom:none}
+.act-item:hover{background:var(--sur2)}
+.act-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.act-body{flex:1;min-width:0}
+.act-tipo{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.act-desc{font-size:.82rem;font-weight:700;color:var(--txt)}
+.act-meta{font-size:.68rem;color:var(--mut);margin-top:2px}
+.act-monto{font-family:"DM Mono",monospace;font-weight:800;font-size:.9rem;flex-shrink:0;text-align:right}
+.act-time{font-family:"DM Mono",monospace;font-size:.64rem;color:var(--mut);text-align:right;margin-top:2px}
+.hist-chip.active{background:var(--acc);color:#000;border-color:var(--acc)}
+.hist-chip:hover:not(.active){color:var(--txt);border-color:var(--txt)}
+.act-day-sep{padding:6px 14px;font-size:.64rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;background:var(--sur2);border-bottom:1px solid var(--bor)}
+.rep-section{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);overflow:hidden;margin-bottom:16px}
+.rep-header{padding:14px 18px;border-bottom:1px solid var(--bor);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rep-title{font-size:.95rem;font-weight:800;color:var(--txt)}
+.rep-subtitle{font-size:.72rem;color:var(--mut)}
+.rep-body{padding:16px 18px}
+.rep-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(30,42,58,.3);gap:12px}
+.rep-row:last-child{border-bottom:none}
+.rep-row-label{font-size:.8rem;color:var(--txt);flex:1}
+.rep-row-val{font-family:"DM Mono",monospace;font-weight:800;font-size:.88rem;flex-shrink:0}
+.rep-total-row{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:rgba(0,229,160,.06);border-top:1px solid rgba(0,229,160,.25)}
+.rep-total-label{font-size:.82rem;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:1px}
+.rep-total-val{font-family:"DM Mono",monospace;font-weight:800;font-size:1.2rem;color:var(--acc)}
+.rep-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.rep-kpi{background:var(--sur2);border:1px solid var(--bor);border-radius:var(--rad);padding:13px;text-align:center;position:relative;overflow:hidden;color:var(--txt)}
+.rep-kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--rk,var(--acc))}
+.rep-kpi-label{font-size:.6rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.rep-kpi-val{font-size:1.2rem;font-weight:800;font-family:"DM Mono",monospace;color:var(--rk,var(--acc))}
+.rep-date-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.print-btn{padding:8px 16px;background:rgba(0,149,255,.12);border:1px solid rgba(0,149,255,.25);color:var(--acc2);border-radius:10px;font-family:"Syne",sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;display:flex;align-items:center;gap:6px}
+.print-btn:hover{background:rgba(0,149,255,.22)}
+@media print{
+  .dheader,.mheader,.bnav,.fab,.print-btn,.rep-date-bar,.hist-filters{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  .rep-section,.scard{border:1px solid #ccc!important;break-inside:avoid}
+  .rep-row-val,.rep-total-val,.rep-kpi-val,.cap-val{color:#000!important}
+  main{padding:8px!important}
+}
 @media(max-width:640px){
   .dheader{display:none}.mheader{display:flex}.bnav{display:flex}.fab{display:flex}
   main{padding:12px 14px;padding-bottom:calc(var(--bnav) + var(--safe) + 76px)}
@@ -302,6 +344,10 @@ select option{background:var(--sur)}
   .toast{bottom:calc(var(--bnav) + var(--safe) + 10px)}
   .frow{grid-template-columns:1fr}.frow3{grid-template-columns:1fr 1fr}
   .filters-bar{gap:7px;padding:10px}.capital-banner{gap:12px}
+  .rep-kpis{grid-template-columns:1fr 1fr}.rep-kpi:nth-child(3){grid-column:1/-1}
+  .rep-date-bar{flex-direction:column;align-items:stretch}.print-btn{justify-content:center}
+  .rep-kpis{grid-template-columns:1fr 1fr}.rep-kpi:last-child{grid-column:1/-1}
+  .rep-date-bar{flex-direction:column}.print-btn{width:100%;justify-content:center}
   .filters-bar input,.filters-bar select{width:100%;flex:1 1 100%}
   .fi-search{flex:1 1 100%}
   .fi{flex:1 1 calc(50% - 4px)}
@@ -336,6 +382,33 @@ select option{background:var(--sur)}
   .capital-bar::before{font-size:.55rem}
   .summary-bar{display:none}
 }
+
+/* ── HISTORIAL ─────────────────────────────────────────────── */
+.hist-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.hist-list{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);overflow:hidden}
+.hist-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(30,42,58,.35);transition:background .15s}
+.hist-item:last-child{border-bottom:none}
+.hist-item:hover{background:var(--sur2)}
+.hist-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.hist-body{flex:1;min-width:0}
+.hist-title{font-weight:700;font-size:.84rem;color:var(--txt);line-height:1.3}
+.hist-sub{font-size:.71rem;color:var(--mut);margin-top:2px}
+.hist-right{text-align:right;flex-shrink:0}
+.hist-amount{font-family:"DM Mono",monospace;font-weight:800;font-size:.88rem}
+.hist-time{font-size:.65rem;color:var(--mut);margin-top:3px;font-family:"DM Mono",monospace}
+.hist-badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:.6rem;font-weight:700;margin-top:3px}
+.hist-empty{text-align:center;padding:40px;color:var(--mut)}
+.hist-empty-icon{font-size:2.2rem;margin-bottom:8px}
+.hist-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.hist-stat{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);padding:14px 16px;text-align:center;color:var(--txt)}
+.hist-stat-label{font-size:.6rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.hist-stat-val{font-size:1.3rem;font-weight:800;font-family:"DM Mono",monospace}
+.hist-day-sep{padding:7px 16px;font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1.2px;background:var(--sur2);border-bottom:1px solid rgba(30,42,58,.4)}
+@media(max-width:640px){
+  .hist-stats{grid-template-columns:1fr 1fr}
+  .hist-item{padding:10px 12px;gap:10px}
+  .hist-icon{width:34px;height:34px;font-size:1rem}
+}
 </style>
 </head>
 <body>
@@ -368,6 +441,8 @@ select option{background:var(--sur)}
     <button class="ntab" onclick="go('acuerdos',this)">📅 Acuerdos</button>
     <button class="ntab" onclick="go('gastos',this)">💶 Gastos</button>
     <button class="ntab" onclick="go('mensual',this)">📋 Mensual</button>
+    <button class="ntab" onclick="go('historial',this)">🕐 Historial</button>
+    <button class="ntab" onclick="go('reportes',this)">📈 Reportes</button>
   </div>
   <div class="hdr-right">
     <span class="sync-badge" id="sync-status">● offline</span>
@@ -581,6 +656,125 @@ select option{background:var(--sur)}
     </div>
   </div>
 
+  <!-- HISTORIAL -->
+  <div class="page" id="page-historial">
+    <div class="sec-hdr">
+      <div class="sec-title">📋 Historial de Actividades</div>
+      <button class="btn btn-d btn-sm" onclick="clearHistorial()" style="font-size:.72rem">🗑 Limpiar historial</button>
+    </div>
+    <!-- Stats -->
+    <div class="hist-stats" id="hist-stats"></div>
+    <!-- Filters -->
+    <div class="hist-filters">
+      <input class="search-input" type="text" id="hist-search" placeholder="🔍 Buscar actividad o cliente..." oninput="renderHistorial()" style="flex:1;min-width:180px">
+      <select class="filter-select" id="hist-tipo" onchange="renderHistorial()">
+        <option value="">Todos los tipos</option>
+        <option value="prestamo_nuevo">💳 Nuevo préstamo</option>
+        <option value="prestamo_editado">✏ Préstamo editado</option>
+        <option value="prestamo_eliminado">🗑 Préstamo eliminado</option>
+        <option value="abono">💚 Abono recibido</option>
+        <option value="acuerdo_nuevo">📅 Acuerdo creado</option>
+        <option value="acuerdo_cumplido">✅ Acuerdo cumplido</option>
+        <option value="acuerdo_eliminado">🗑 Acuerdo eliminado</option>
+        <option value="gasto_nuevo">💶 Movimiento financiero</option>
+        <option value="capital_config">⚙ Capital configurado</option>
+      </select>
+      <input type="date" class="filter-select" id="hist-desde" onchange="renderHistorial()" style="min-width:130px">
+      <input type="date" class="filter-select" id="hist-hasta" onchange="renderHistorial()" style="min-width:130px">
+      <button class="btn btn-g btn-sm" onclick="clearHistFilters()">✕ Limpiar</button>
+    </div>
+    <!-- List -->
+    <div class="hist-list" id="hist-list">
+      <div class="hist-empty"><div class="hist-empty-icon">📋</div><p>Sin actividades registradas aún.</p></div>
+    </div>
+  </div>
+
+
+
+  <!-- HISTORIAL DE ACTIVIDADES -->
+  <div class="page" id="page-historial">
+    <div class="sec-hdr">
+      <div class="sec-title">📜 Historial de actividades</div>
+      <button class="btn btn-g" onclick="exportHistorial()" style="font-size:.74rem;padding:6px 14px">⬇ Exportar CSV</button>
+    </div>
+    <div class="hist-filters" id="hist-filter-bar">
+      <button class="hist-chip active" onclick="setHistFilter('',this)">Todos</button>
+      <button class="hist-chip" onclick="setHistFilter('prestamo',this)">💰 Préstamos</button>
+      <button class="hist-chip" onclick="setHistFilter('abono',this)">💚 Abonos</button>
+      <button class="hist-chip" onclick="setHistFilter('eliminacion',this)">🗑 Eliminaciones</button>
+      <button class="hist-chip" onclick="setHistFilter('edicion',this)">✏ Ediciones</button>
+      <input type="date" id="hist-date-filter" class="filter-select" style="margin-left:auto" onchange="renderHistorial()">
+    </div>
+    <div class="rep-section">
+      <div class="act-feed" id="act-feed"></div>
+      <div id="act-empty" class="empty" style="display:none;padding:32px"><div class="ei">📜</div><p>Sin actividades registradas aún.</p></div>
+    </div>
+  </div>
+
+  <!-- REPORTES -->
+  <div class="page" id="page-reportes">
+    <div class="sec-hdr">
+      <div class="sec-title">📈 Reportes</div>
+    </div>
+
+    <!-- Date selector shared -->
+    <div class="rep-date-bar">
+      <div style="font-size:.75rem;font-weight:700;color:var(--mut)">Fecha del reporte:</div>
+      <input type="date" id="rep-fecha" class="filter-select" style="width:160px" onchange="renderReportes()">
+      <button class="print-btn" onclick="window.print()">🖨 Imprimir / PDF</button>
+    </div>
+
+    <!-- REPORTE LIQUIDACIÓN DIARIA -->
+    <div class="rep-section" id="rep-liquidacion">
+      <div class="rep-header">
+        <div>
+          <div class="rep-title">📋 Liquidación Diaria</div>
+          <div class="rep-subtitle" id="rep-liq-fecha">—</div>
+        </div>
+        <div id="rep-liq-badge"></div>
+      </div>
+      <div class="rep-body">
+        <div class="rep-kpis" id="rep-liq-kpis"></div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Abonos recibidos ese día</div>
+        <div id="rep-liq-list"></div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px">Préstamos desembolsados ese día</div>
+        <div id="rep-liq-prestamos"></div>
+        <div class="rep-total-row">
+          <div class="rep-total-label">💵 Posición neta del día</div>
+          <div class="rep-total-val" id="rep-liq-neto">€0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTE DE RECAUDO -->
+    <div class="rep-section" id="rep-recaudo">
+      <div class="rep-header">
+        <div>
+          <div class="rep-title">💰 Reporte de Recaudo</div>
+          <div class="rep-subtitle" id="rep-rec-periodo">Período completo</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="rep-rec-periodo-sel" class="filter-select" style="font-size:.74rem" onchange="renderReportes()">
+            <option value="dia">Día seleccionado</option>
+            <option value="semana">Última semana</option>
+            <option value="mes" selected>Mes actual</option>
+            <option value="total">Todo el historial</option>
+          </select>
+        </div>
+      </div>
+      <div class="rep-body">
+        <div class="rep-kpis" id="rep-rec-kpis"></div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Desglose por cliente</div>
+        <div id="rep-rec-list"></div>
+        <div class="rep-total-row">
+          <div class="rep-total-label">✦ Total recaudado</div>
+          <div class="rep-total-val" id="rep-rec-total">€0</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </main>
 
 <!-- BOTTOM NAV -->
@@ -592,6 +786,8 @@ select option{background:var(--sur)}
     <button class="btab" id="bt-acuerdos" onclick="go('acuerdos',this,true)"><span class="btab-icon">📅</span><span>Acuerdos</span></button>
     <button class="btab" id="bt-gastos" onclick="go('gastos',this,true)"><span class="btab-icon">💶</span><span>Gastos</span></button>
     <button class="btab" id="bt-mensual" onclick="go('mensual',this,true)"><span class="btab-icon">📋</span><span>Mensual</span></button>
+    <button class="btab" id="bt-historial" onclick="go('historial',this,true)"><span class="btab-icon">🕐</span><span>Historial</span></button>
+    <button class="btab" id="bt-reportes" onclick="go('reportes',this,true)"><span class="btab-icon">📈</span><span>Reportes</span></button>
   </div>
 </nav>
 <button class="fab" id="app-fab" style="display:none" onclick="openM()">+</button>
@@ -767,7 +963,7 @@ const AVC=[['#00e5a0','#000'],['#0095ff','#000'],['#ff6b35','#000'],['#f5c842','
 const PAL=['#00e5a0','#0095ff','#ff6b35','#f5c842','#ff4466','#a855f7','#06b6d4','#f97316','#10b981','#e879f9'];
 const TT={backgroundColor:'#181f2e',titleColor:'#e8edf5',bodyColor:'#e8edf5',borderColor:'#1e2a3a',borderWidth:1};
 const PLAZO_L={Me:'Mensual',Se:'Semanal',Di:'Diario',Qu:'Quincenal'};
-const PTITLES={dashboard:'Dashboard',clientes:'Clientes',caja:'Caja',acuerdos:'Acuerdos',gastos:'Gastos',mensual:'Mensual'};
+const PTITLES={dashboard:'Dashboard',clientes:'Clientes',caja:'Caja',acuerdos:'Acuerdos',gastos:'Gastos',mensual:'Mensual',historial:'Historial',reportes:'Reportes'};
 const TIPO_ICON={ingreso:'💚',gasto:'🔴',deuda_fija:'🟡',deuda_unica:'🟠'};
 const TIPO_COLOR={ingreso:'var(--acc)',gasto:'var(--dan)',deuda_fija:'var(--gld)',deuda_unica:'var(--acc3)'};
 const PAGE_SIZE=20;
@@ -775,7 +971,7 @@ const PAGE_SIZE=20;
 // ═══════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════
-let clientes=[],gastos=[],acuerdos=[],abonosPor={},allAbonos=[];
+let clientes=[],gastos=[],acuerdos=[],abonosPor={},allAbonos=[],actividades=[];
 let cPie,cInt,cBar,cMenPie,cGastos,cCaja;
 let editId=null,payId=null;
 let filteredClientes=[];
@@ -814,16 +1010,27 @@ function setSyncStatus(ok){
   ['sync-status','sync-status-m'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=txt;el.className='sync-badge'+(ok?' ok':'');}});
 }
 
+// ── ACTIVITY LOGGING ────────────────────────
+async function logActivity(tipo, descripcion, cliente_nombre='', monto=0, metadata={}){
+  try{
+    await db.from('actividades').insert([{tipo,descripcion,cliente_nombre,monto,metadata}]);
+  }catch(e){ console.warn('logActivity failed:',e.message); }
+}
+
 async function loadAll(){
   showLoad();
   await loadCapitalFromDB();
   try{
-    const[r1,r2,r3]=await Promise.all([
+    const[r1,r2,r3,r4]=await Promise.all([
       db.from('clientes').select('*').order('nombre'),
       db.from('gastos').select('*').order('fecha',{ascending:false}),
-      db.from('acuerdos').select('*,clientes(nombre,telefono)').order('fecha_limite')
+      db.from('acuerdos').select('*,clientes(nombre,telefono)').order('fecha_limite'),
+      db.from('actividades').select('*').order('created_at',{ascending:false}).limit(300)
     ]);
-    clientes=r1.data||[];gastos=r2.data||[];acuerdos=r3.data||[];
+    clientes    = r1.data||[];
+    gastos      = r2.data||[];
+    acuerdos    = r3.data||[];
+    actividades = r4.data||[];
     if(clientes.length){
       const{data:ab}=await db.from('abonos').select('*').order('created_at',{ascending:false});
       allAbonos=ab||[];
@@ -852,6 +1059,15 @@ const n=v=>parseFloat(v||0);
 // ═══════════════════════════════════════
 //  CAPITAL INICIAL (local)
 // ═══════════════════════════════════════
+// ══════════════════════════════════════
+//  ACTIVIDADES LOG
+// ══════════════════════════════════════
+async function logActividad(tipo, descripcion, clienteNombre='', clienteId=null, monto=0, detalle={}){
+  try{
+    await db.from('actividades').insert([{tipo,descripcion,cliente_nombre:clienteNombre,cliente_id:clienteId||undefined,monto,detalle}]);
+  }catch(e){ console.warn('log error:',e); }
+}
+
 function getCapitalInicial(){return parseFloat(window.__capitalInicial||localStorage.getItem('gp-capital-inicial')||'0');}
 function getCapitalDisponible(){return parseFloat(window.__capitalDisponible??localStorage.getItem('gp-capital-disponible')??getCapitalInicial());}
 function setCapitalDisponible(v){
@@ -893,6 +1109,7 @@ async function saveCapitalInicial(){
       {clave:'capital_disponible',valor:String(v)}
     ],{onConflict:'clave'});
   }catch(e){console.warn('Capital save warning:',e);}
+  logActivity('capital_config',`Capital configurado: ${fmtE(v)}`,'',v,{tipo:'capital_inicial'});
   render();
   showToast('✅ '+fmtE(v)+' configurado como capital disponible para prestar');
 }
@@ -927,6 +1144,8 @@ function go(pg,btn,mob=false){
   if(pg==='acuerdos')renderAcuerdos();
   if(pg==='gastos')renderGastos();
   if(pg==='caja')renderCaja();
+  if(pg==='historial')renderHistorial();
+  if(pg==='reportes')renderReportes();
 }
 
 // ═══════════════════════════════════════
@@ -982,6 +1201,8 @@ function render(){
   renderAcuerdos();
   renderGastos();
   renderCaja();
+  renderHistorial();
+  renderReportes();
 }
 
 // ── STATS BAR ────────────────────────────
@@ -1476,12 +1697,15 @@ async function saveClient(){
         const newDisp=parseFloat((getCapitalDisponible()+diff).toFixed(2));
         setCapitalDisponible(Math.max(0,newDisp));
       }
-      await db.from('clientes').update(obj).eq('id',editId);showToast('✓ Actualizado');
+      await db.from('clientes').update(obj).eq('id',editId);
+      logActividad('edicion',`Préstamo editado: ${nombre}`,nombre,monto,{interes:pct});
+      showToast('✓ Actualizado');
     } else {
       // New loan: subtract monto from disponible
       const newDisp=parseFloat((getCapitalDisponible()-monto).toFixed(2));
       setCapitalDisponible(Math.max(0,newDisp));
       await db.from('clientes').insert([obj]);
+      logActividad('prestamo',`Nuevo préstamo: ${nombre}`,nombre,null,monto,{interes:pct,total,plazo:obj.plazo});
       showToast('✓ Préstamo guardado · Disponible: '+fmtE(Math.max(0,newDisp)));
     }
     closeM();await loadAll();
@@ -1516,9 +1740,11 @@ async function confirmPay(){
     const newSaldo=parseFloat((n(c.total)-newPag).toFixed(2));
     await db.from('clientes').update({pagado:newPag,saldo:newSaldo}).eq('id',payId);
     await db.from('abonos').insert([{cliente_id:payId,monto,fecha:document.getElementById('pay-date').value||new Date().toISOString().slice(0,10),notas:document.getElementById('pay-notes').value}]);
+    await logActividad('abono',`Abono recibido: ${c.nombre}`,c.nombre,payId,monto,{saldoAntes:n(c.saldo),saldoDespues:Math.max(0,parseFloat((n(c.total)-(n(c.pagado)+monto)).toFixed(2)))});
     // Auto-add abono back to capital disponible (cash returned to hand)
     const newDisp=parseFloat((getCapitalDisponible()+monto).toFixed(2));
     setCapitalDisponible(newDisp);
+    logActivity('abono',`Abono recibido: ${c.nombre}`,c.nombre,monto,{saldo_nuevo:newSaldo,notas:document.getElementById('pay-notes').value});
     showToast(`✓ Abono de ${fmtE(monto)} · Disponible: ${fmtE(newDisp)}`);
     closePay();await loadAll();
   }catch(e){showToast('Error');console.error(e);}
@@ -1536,6 +1762,7 @@ async function del(id){
     setCapitalDisponible(newDisp);
   }
   await db.from('clientes').delete().eq('id',id);
+  logActividad('eliminacion',`Préstamo eliminado: ${c?.nombre||''}`,c?.nombre||'',n(c?.monto),{saldo:n(c?.saldo)});
   await loadAll();
   showToast('Eliminado · Capital disponible actualizado');
   hideLoad();
@@ -1556,12 +1783,31 @@ async function saveAcuerdo(){
   const cId=document.getElementById('ac-cliente').value,fecha=document.getElementById('ac-fecha').value;
   if(!cId||!fecha){showToast('⚠ Cliente y fecha requeridos');return;}
   showLoad();
-  try{await db.from('acuerdos').insert([{cliente_id:cId,fecha_limite:fecha,monto_acordado:parseFloat(document.getElementById('ac-monto').value)||0,descripcion:document.getElementById('ac-desc').value}]);closeAcuerdo();await loadAll();showToast('✓ Acuerdo creado');}
+  const acMonto=parseFloat(document.getElementById('ac-monto').value)||0;
+  const acDesc=document.getElementById('ac-desc').value;
+  const cNom=clientes.find(x=>x.id===cId)?.nombre||'';
+  try{await db.from('acuerdos').insert([{cliente_id:cId,fecha_limite:fecha,monto_acordado:acMonto,descripcion:acDesc}]);
+    logActivity('acuerdo_nuevo',`Acuerdo creado: ${cNom}`,cNom,acMonto,{fecha_limite:fecha,descripcion:acDesc});
+    closeAcuerdo();await loadAll();showToast('✓ Acuerdo creado');}
   catch(e){showToast('Error');}
   hideLoad();
 }
-async function markAcuerdo(id,v){showLoad();await db.from('acuerdos').update({cumplido:v}).eq('id',id);await loadAll();showToast(v?'✓ Cumplido':'Desmarcado');hideLoad();}
-async function delAcuerdo(id){if(!confirm('¿Eliminar acuerdo?'))return;showLoad();await db.from('acuerdos').delete().eq('id',id);await loadAll();showToast('Eliminado');hideLoad();}
+async function markAcuerdo(id,v){
+  showLoad();
+  if(v){
+    const ac=acuerdos.find(x=>x.id===id);
+    const cNom=ac?.clientes?.nombre||'';
+    logActivity('acuerdo_cumplido',`Acuerdo cumplido: ${cNom}`,cNom,n(ac?.monto_acordado));
+  }
+  await db.from('acuerdos').update({cumplido:v}).eq('id',id);await loadAll();showToast(v?'✓ Cumplido':'Desmarcado');hideLoad();
+}
+async function delAcuerdo(id){
+  if(!confirm('¿Eliminar acuerdo?'))return;
+  showLoad();
+  const ac=acuerdos.find(x=>x.id===id);
+  logActivity('acuerdo_eliminado',`Acuerdo eliminado: ${ac?.clientes?.nombre||''}`,ac?.clientes?.nombre||'',n(ac?.monto_acordado));
+  await db.from('acuerdos').delete().eq('id',id);await loadAll();showToast('Eliminado');hideLoad();
+}
 
 // ══════════════════════════════════════
 //  GASTOS
@@ -1592,6 +1838,338 @@ async function saveCapitalDisponibleManual(){
   if(inp) inp.value='';
   render();
   showToast('✅ Capital disponible actualizado a '+fmtE(v));
+}
+
+
+// ══════════════════════════════════════════════════════════════
+//  HISTORIAL DE ACTIVIDADES
+// ══════════════════════════════════════════════════════════════
+const TIPO_META = {
+  prestamo_nuevo:    {icon:'💳', color:'var(--acc)',  bg:'rgba(0,229,160,.12)',  label:'Nuevo préstamo'},
+  prestamo_editado:  {icon:'✏️', color:'var(--acc2)', bg:'rgba(0,149,255,.12)',  label:'Préstamo editado'},
+  prestamo_eliminado:{icon:'🗑', color:'var(--dan)',  bg:'rgba(255,68,102,.12)', label:'Préstamo eliminado'},
+  abono:             {icon:'💚', color:'#25d366',     bg:'rgba(37,211,102,.12)', label:'Abono recibido'},
+  acuerdo_nuevo:     {icon:'📅', color:'var(--acc2)', bg:'rgba(0,149,255,.12)',  label:'Acuerdo creado'},
+  acuerdo_cumplido:  {icon:'✅', color:'var(--acc)',  bg:'rgba(0,229,160,.12)',  label:'Acuerdo cumplido'},
+  acuerdo_eliminado: {icon:'🗑', color:'var(--dan)',  bg:'rgba(255,68,102,.12)', label:'Acuerdo eliminado'},
+  gasto_nuevo:       {icon:'💶', color:'var(--gld)',  bg:'rgba(245,200,66,.12)', label:'Movimiento'},
+  capital_config:    {icon:'⚙', color:'var(--acc3)', bg:'rgba(255,107,53,.12)', label:'Capital configurado'},
+};
+
+function fmtDateTime(ts){
+  if(!ts) return '—';
+  const d = new Date(ts);
+  const pad = n => String(n).padStart(2,'0');
+  const date = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+  const time = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return {date, time, full:`${date} ${time}`, ts:d};
+}
+
+function getDayLabel(ts){
+  const d = new Date(ts);
+  const today = new Date(); const yesterday = new Date(); yesterday.setDate(today.getDate()-1);
+  const isSameDay = (a,b) => a.getDate()===b.getDate()&&a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear();
+  if(isSameDay(d,today)) return 'Hoy';
+  if(isSameDay(d,yesterday)) return 'Ayer';
+  return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+function clearHistFilters(){
+  ['hist-search','hist-tipo','hist-desde','hist-hasta'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  renderHistorial();
+}
+
+async function clearHistorial(){
+  if(!confirm('¿Eliminar todo el historial de actividades? Esta acción no se puede deshacer.')) return;
+  showLoad();
+  try{ await db.from('actividades').delete().gt('id','00000000-0000-0000-0000-000000000000'); actividades=[]; renderHistorial(); showToast('Historial limpiado'); }
+  catch(e){ showToast('Error al limpiar'); }
+  hideLoad();
+}
+
+function renderHistorial(){
+  const q = (document.getElementById('hist-search')?.value||'').toLowerCase();
+  const tipo = document.getElementById('hist-tipo')?.value||'';
+  const desde = document.getElementById('hist-desde')?.value;
+  const hasta = document.getElementById('hist-hasta')?.value;
+
+  let filtered = actividades.filter(a=>{
+    if(q && !a.descripcion.toLowerCase().includes(q) && !a.cliente_nombre.toLowerCase().includes(q)) return false;
+    if(tipo && a.tipo!==tipo) return false;
+    if(desde && a.created_at < desde) return false;
+    if(hasta && a.created_at.slice(0,10) > hasta) return false;
+    return true;
+  });
+
+  // Stats
+  const statsEl = document.getElementById('hist-stats');
+  if(statsEl){
+    const totalActs = actividades.length;
+    const prestamos = actividades.filter(a=>a.tipo==='prestamo_nuevo').length;
+    const abonos = actividades.filter(a=>a.tipo==='abono').length;
+    const montoAbonos = actividades.filter(a=>a.tipo==='abono').reduce((s,a)=>s+parseFloat(a.monto||0),0);
+    statsEl.innerHTML=`
+      <div class="hist-stat"><div class="hist-stat-label">Total actividades</div><div class="hist-stat-val" style="color:var(--acc2)">${totalActs}</div></div>
+      <div class="hist-stat"><div class="hist-stat-label">Préstamos creados</div><div class="hist-stat-val" style="color:var(--acc)">${prestamos}</div></div>
+      <div class="hist-stat"><div class="hist-stat-label">Abonos registrados</div><div class="hist-stat-val" style="color:#25d366">${abonos}</div></div>
+      <div class="hist-stat"><div class="hist-stat-label">Total cobrado</div><div class="hist-stat-val" style="color:var(--gld)">${fmtE(montoAbonos)}</div></div>`;
+  }
+
+  const listEl = document.getElementById('hist-list');
+  if(!listEl) return;
+
+  if(!filtered.length){
+    listEl.innerHTML=`<div class="hist-empty"><div class="hist-empty-icon">${actividades.length?'🔍':'📋'}</div><p>${actividades.length?'Sin resultados para este filtro.':'Sin actividades registradas aún. Los préstamos, abonos y más aparecerán aquí.'}</p></div>`;
+    return;
+  }
+
+  // Group by day
+  let html='';
+  let lastDay='';
+  filtered.forEach(a=>{
+    const dt = fmtDateTime(a.created_at);
+    const dayLabel = getDayLabel(a.created_at);
+    if(dayLabel!==lastDay){
+      html+=`<div class="hist-day-sep">📆 ${dayLabel}</div>`;
+      lastDay=dayLabel;
+    }
+    const meta = TIPO_META[a.tipo]||{icon:'📌',color:'var(--mut)',bg:'rgba(90,106,128,.15)',label:a.tipo};
+    const hasAmount = parseFloat(a.monto||0) > 0;
+    const isNeg = a.tipo==='prestamo_eliminado'||a.tipo==='acuerdo_eliminado'||a.tipo.includes('gasto');
+    html+=`<div class="hist-item">
+      <div class="hist-icon" style="background:${meta.bg};color:${meta.color}">${meta.icon}</div>
+      <div class="hist-body">
+        <div class="hist-title">${a.descripcion}</div>
+        <div class="hist-sub">${a.cliente_nombre?`👤 ${a.cliente_nombre} · `:''}${a.metadata?.interes?`${a.metadata.interes}% interés · `:''}${a.metadata?.plazo?`${a.metadata.plazo} · `:''}${a.metadata?.tipo||''}</div>
+        <span class="hist-badge" style="background:${meta.bg};color:${meta.color}">${meta.label}</span>
+      </div>
+      <div class="hist-right">
+        ${hasAmount?`<div class="hist-amount" style="color:${a.tipo==='abono'?'#25d366':a.tipo.includes('eliminado')?'var(--dan)':'var(--acc)'}">${isNeg&&a.tipo!=='abono'?'-':''}${fmtE(a.monto)}</div>`:''}
+        <div class="hist-time">${dt.time}</div>
+        <div class="hist-time">${dt.date}</div>
+      </div>
+    </div>`;
+  });
+  listEl.innerHTML=html;
+}
+
+// ══════════════════════════════════════
+//  HISTORIAL
+// ══════════════════════════════════════
+let histFilter='';
+function setHistFilter(tipo,btn){
+  histFilter=tipo;
+  document.querySelectorAll('.hist-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistorial();
+}
+
+function renderHistorial(){
+  const feed=document.getElementById('act-feed');
+  const empty=document.getElementById('act-empty');
+  if(!feed)return;
+  const dateF=document.getElementById('hist-date-filter')?.value;
+  let list=[...actividades];
+  if(histFilter) list=list.filter(a=>a.tipo===histFilter);
+  if(dateF) list=list.filter(a=>a.created_at&&a.created_at.startsWith(dateF));
+  if(!list.length){feed.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+
+  const ICONS={prestamo:{i:'💰',c:'#00e5a0',bg:'rgba(0,229,160,.12)',label:'Préstamo'},
+    abono:{i:'💚',c:'#00e5a0',bg:'rgba(0,229,160,.1)',label:'Abono'},
+    eliminacion:{i:'🗑',c:'#ff4466',bg:'rgba(255,68,102,.12)',label:'Eliminado'},
+    edicion:{i:'✏',c:'#0095ff',bg:'rgba(0,149,255,.12)',label:'Editado'},
+    default:{i:'📋',c:'#5a6a80',bg:'rgba(90,106,128,.1)',label:'Actividad'}};
+
+  // Group by date
+  const groups={};
+  list.forEach(a=>{
+    const d=a.created_at?a.created_at.slice(0,10):'sin-fecha';
+    if(!groups[d])groups[d]=[];
+    groups[d].push(a);
+  });
+
+  let html='';
+  Object.entries(groups).forEach(([date,items])=>{
+    const label=date==='sin-fecha'?'Sin fecha':fmtDate(date);
+    // Day summary
+    const dayAbonos=items.filter(i=>i.tipo==='abono').reduce((s,i)=>s+n(i.monto),0);
+    const dayPrestamos=items.filter(i=>i.tipo==='prestamo').reduce((s,i)=>s+n(i.monto),0);
+    html+=`<div class="act-day-sep">${label} &nbsp;·&nbsp; ${items.length} movimiento${items.length!==1?'s':''}${dayAbonos>0?` &nbsp;·&nbsp; +${fmtE(dayAbonos)} recaudado`:''}${dayPrestamos>0?` &nbsp;·&nbsp; -${fmtE(dayPrestamos)} prestado`:''}</div>`;
+    items.forEach(a=>{
+      const cfg=ICONS[a.tipo]||ICONS.default;
+      const time=a.created_at?new Date(a.created_at).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}):'—';
+      const montoColor=a.tipo==='abono'?'var(--acc)':a.tipo==='prestamo'?'var(--dan)':a.tipo==='eliminacion'?'var(--dan)':'var(--mut)';
+      const montoSign=a.tipo==='abono'?'+':a.tipo==='prestamo'?'-':a.tipo==='eliminacion'?'-':'';
+      html+=`<div class="act-item">
+        <div class="act-icon" style="background:${cfg.bg};color:${cfg.c}">${cfg.i}</div>
+        <div class="act-body">
+          <div class="act-tipo" style="color:${cfg.c}">${cfg.label}</div>
+          <div class="act-desc">${a.descripcion}</div>
+          ${a.cliente_nombre?`<div class="act-meta">👤 ${a.cliente_nombre}</div>`:''}
+          ${a.detalle&&a.detalle.plazo?`<div class="act-meta">Plazo: ${a.detalle.plazo} · Interés: ${a.detalle.interes||0}%</div>`:''}
+        </div>
+        ${n(a.monto)>0?`<div style="text-align:right;flex-shrink:0">
+          <div class="act-monto" style="color:${montoColor}">${montoSign}${fmtE(a.monto)}</div>
+          <div class="act-time">${time}</div>
+        </div>`:`<div class="act-time">${time}</div>`}
+      </div>`;
+    });
+  });
+  feed.innerHTML=html;
+}
+
+function exportHistorial(){
+  const rows=[['Tipo','Descripción','Cliente','Monto','Fecha','Hora']];
+  actividades.forEach(a=>{
+    const dt=a.created_at?new Date(a.created_at):null;
+    rows.push([a.tipo,a.descripcion,a.cliente_nombre||'',n(a.monto).toFixed(2),
+      dt?dt.toLocaleDateString('es-ES'):'',dt?dt.toLocaleTimeString('es-ES'):'' ]);
+  });
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('
+');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,﻿'+encodeURIComponent(csv);
+  a.download='historial_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  showToast('✅ CSV descargado');
+}
+
+// ══════════════════════════════════════
+//  REPORTES
+// ══════════════════════════════════════
+function renderReportes(){
+  // Set default date to today if empty
+  const fechaEl=document.getElementById('rep-fecha');
+  if(fechaEl&&!fechaEl.value) fechaEl.value=new Date().toISOString().slice(0,10);
+  renderRepLiquidacion();
+  renderRepRecaudo();
+}
+
+function renderRepLiquidacion(){
+  const fechaEl=document.getElementById('rep-fecha');
+  const fecha=fechaEl?.value||new Date().toISOString().slice(0,10);
+  const [y,m,d]=fecha.split('-');
+  const label=`${d}/${m}/${y}`;
+
+  const liqFecha=document.getElementById('rep-liq-fecha');
+  if(liqFecha) liqFecha.textContent=`Corte del día ${label}`;
+
+  // Abonos del día
+  const abonosDia=allAbonos.filter(a=>a.fecha===fecha);
+  const totalAbonos=abonosDia.reduce((s,a)=>s+n(a.monto),0);
+
+  // Préstamos desembolsados ese día
+  const prestamosDia=clientes.filter(c=>c.fecha_prestamo===fecha);
+  const totalPrestamos=prestamosDia.reduce((s,c)=>s+n(c.monto),0);
+
+  const neto=totalAbonos-totalPrestamos;
+  const kpis=document.getElementById('rep-liq-kpis');
+  if(kpis) kpis.innerHTML=`
+    <div class="rep-kpi" style="--rk:var(--acc)"><div class="rep-kpi-label">Recaudado</div><div class="rep-kpi-val">${fmtE(totalAbonos)}</div></div>
+    <div class="rep-kpi" style="--rk:var(--dan)"><div class="rep-kpi-label">Desembolsado</div><div class="rep-kpi-val">${fmtE(totalPrestamos)}</div></div>
+    <div class="rep-kpi" style="--rk:${neto>=0?'var(--acc2)':'var(--dan)'}"><div class="rep-kpi-label">Neto del día</div><div class="rep-kpi-val">${fmtE(neto)}</div></div>`;
+
+  // Abonos list
+  const liqList=document.getElementById('rep-liq-list');
+  if(liqList){
+    if(!abonosDia.length) liqList.innerHTML='<div style="font-size:.78rem;color:var(--mut);padding:8px 0">Sin abonos ese día</div>';
+    else liqList.innerHTML=abonosDia.map(a=>{
+      const c=clientes.find(x=>x.id===a.cliente_id);
+      return`<div class="rep-row">
+        <div><div class="rep-row-label">${c?.nombre||'—'}</div>${a.notas?`<div style="font-size:.68rem;color:var(--mut)">${a.notas}</div>`:''}</div>
+        <div class="rep-row-val" style="color:var(--acc)">+${fmtE(a.monto)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Préstamos list
+  const liqPrest=document.getElementById('rep-liq-prestamos');
+  if(liqPrest){
+    if(!prestamosDia.length) liqPrest.innerHTML='<div style="font-size:.78rem;color:var(--mut);padding:8px 0">Sin desembolsos ese día</div>';
+    else liqPrest.innerHTML=prestamosDia.map(c=>`<div class="rep-row">
+      <div><div class="rep-row-label">${c.nombre}</div><div style="font-size:.68rem;color:var(--mut)">${c.interes}% · Vence: ${fmtDate(c.fecha_vencimiento)}</div></div>
+      <div class="rep-row-val" style="color:var(--dan)">-${fmtE(c.monto)}</div>
+    </div>`).join('');
+  }
+
+  const netoEl=document.getElementById('rep-liq-neto');
+  if(netoEl){netoEl.textContent=fmtE(neto);netoEl.style.color=neto>=0?'var(--acc)':'var(--dan)';}
+
+  // Badge
+  const badge=document.getElementById('rep-liq-badge');
+  if(badge) badge.innerHTML=`<span style="background:${neto>=0?'rgba(0,229,160,.12)':'rgba(255,68,102,.12)'};color:${neto>=0?'var(--acc)':'var(--dan)'};padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;font-family:'DM Mono',monospace">${neto>=0?'✅ Día positivo':'⚠ Día negativo'}</span>`;
+}
+
+function renderRepRecaudo(){
+  const fechaEl=document.getElementById('rep-fecha');
+  const fecha=fechaEl?.value||new Date().toISOString().slice(0,10);
+  const periodo=document.getElementById('rep-rec-periodo-sel')?.value||'mes';
+
+  const now=new Date(fecha);
+  let desde,hasta,label;
+  if(periodo==='dia'){desde=fecha;hasta=fecha;label=`Día ${fmtDate(fecha)}`;}
+  else if(periodo==='semana'){
+    const d=new Date(now);d.setDate(d.getDate()-6);
+    desde=d.toISOString().slice(0,10);hasta=fecha;
+    label=`Semana: ${fmtDate(desde)} – ${fmtDate(hasta)}`;
+  } else if(periodo==='mes'){
+    desde=fecha.slice(0,7)+'-01';
+    const last=new Date(now.getFullYear(),now.getMonth()+1,0);
+    hasta=last.toISOString().slice(0,10);
+    label=`Mes: ${new Date(fecha).toLocaleDateString('es-ES',{month:'long',year:'numeric'})}`;
+  } else {desde=null;hasta=null;label='Todo el historial';}
+
+  const perEl=document.getElementById('rep-rec-periodo');
+  if(perEl) perEl.textContent=label;
+
+  const filtAb=allAbonos.filter(a=>{
+    if(!desde) return true;
+    return a.fecha>=desde&&a.fecha<=hasta;
+  });
+
+  const totalRec=filtAb.reduce((s,a)=>s+n(a.monto),0);
+  const clientesRec=[...new Set(filtAb.map(a=>a.cliente_id))].length;
+  const promedioAb=filtAb.length>0?(totalRec/filtAb.length):0;
+
+  const kpis=document.getElementById('rep-rec-kpis');
+  if(kpis) kpis.innerHTML=`
+    <div class="rep-kpi" style="--rk:var(--acc)"><div class="rep-kpi-label">Total recaudado</div><div class="rep-kpi-val">${fmtE(totalRec)}</div></div>
+    <div class="rep-kpi" style="--rk:var(--acc2)"><div class="rep-kpi-label">Clientes pagadores</div><div class="rep-kpi-val">${clientesRec}</div></div>
+    <div class="rep-kpi" style="--rk:var(--gld)"><div class="rep-kpi-label">Promedio/abono</div><div class="rep-kpi-val">${fmtE(promedioAb)}</div></div>`;
+
+  // Group by client
+  const byClient={};
+  filtAb.forEach(a=>{
+    const c=clientes.find(x=>x.id===a.cliente_id);
+    const key=c?.nombre||a.cliente_id||'—';
+    if(!byClient[key])byClient[key]={nombre:key,total:0,count:0,abonos:[]};
+    byClient[key].total+=n(a.monto);
+    byClient[key].count++;
+    byClient[key].abonos.push(a);
+  });
+  const sorted=Object.values(byClient).sort((a,b)=>b.total-a.total);
+
+  const recList=document.getElementById('rep-rec-list');
+  if(recList){
+    if(!sorted.length) recList.innerHTML='<div style="font-size:.78rem;color:var(--mut);padding:8px 0">Sin abonos en el período seleccionado</div>';
+    else recList.innerHTML=sorted.map(r=>{
+      const pct=totalRec>0?(r.total/totalRec*100).toFixed(1):0;
+      return`<div class="rep-row">
+        <div style="flex:1">
+          <div class="rep-row-label">${r.nombre}</div>
+          <div style="font-size:.68rem;color:var(--mut)">${r.count} abono${r.count!==1?'s':''} · ${pct}% del total</div>
+          <div style="height:3px;background:var(--bor);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:${pct}%;background:var(--acc);border-radius:2px"></div></div>
+        </div>
+        <div class="rep-row-val" style="color:var(--acc);margin-left:12px">+${fmtE(r.total)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const recTotal=document.getElementById('rep-rec-total');
+  if(recTotal) recTotal.textContent=fmtE(totalRec);
 }
 
 // ══════════════════════════════════════
