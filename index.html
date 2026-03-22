@@ -1535,7 +1535,7 @@ function renderCharts(){
   const iCtx=document.getElementById('cInt').getContext('2d');if(cInt)cInt.destroy();
   cInt=new Chart(iCtx,{type:'doughnut',plugins:[ChartDataLabels],data:{labels:gA.map(g=>g[0]+'%'),datasets:[{data:gA.map(g=>g[1].cap),backgroundColor:PAL,borderColor:'#111620',borderWidth:3,hoverOffset:6}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{color:'#e8edf5',font:{family:'Syne',weight:'700',size:10},boxWidth:10,padding:10,
-      generateLabels:chart=>{const ds=chart.data.datasets[0];const t=ds.data.reduce((a,b)=>a+b,0);return chart.data.labels.map((lbl,i)=>({text:`${lbl}  ${(ds.data[i]/t*100).toFixed(1)}%`,fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],lineWidth:0,hidden:false,index:i}));}}},
+      generateLabels:chart=>{const ds=chart.data.datasets[0];const t=ds.data.reduce((a,b)=>a+b,0);return chart.data.labels.map((lbl,i)=>({text:`${lbl}  ${(ds.data[i]/t*100).toFixed(1)}%`,fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],fontColor:'#e8edf5',lineWidth:0,hidden:false,index:i}));}}},
       tooltip:{...TT,callbacks:{label:ctx=>{const g=gA[ctx.dataIndex][1];return[` Capital: ${fmtE(g.cap)}`,` Clientes: ${g.n}`,` ${(g.cap/totAmt*100).toFixed(1)}% del total`];}}},
       datalabels:{color:'#ffffff',font:{family:'DM Mono',weight:'700',size:10},textStrokeColor:'rgba(0,0,0,.8)',textStrokeWidth:2,textShadowColor:'rgba(0,0,0,.9)',textShadowBlur:6,
         formatter:v=>{const p=v/totAmt*100;return p>=5?p.toFixed(1)+'%':'';},anchor:'center',align:'center'}}}});
@@ -1691,7 +1691,7 @@ function renderMensual(){
   cMenPie=new Chart(pCtx,{type:'doughnut',plugins:[ChartDataLabels],data:{labels:sorted.map(g=>g.pct+'% interés'),datasets:[{data:sorted.map(g=>g.cap),backgroundColor:PAL,borderColor:'#111620',borderWidth:3,hoverOffset:8}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{
       legend:{position:'bottom',labels:{color:'#e8edf5',font:{family:'Syne',weight:'700',size:11},boxWidth:11,padding:11,
-        generateLabels:chart=>{const ds=chart.data.datasets[0];const t=ds.data.reduce((a,b)=>a+b,0);return chart.data.labels.map((lbl,i)=>({text:`${lbl}  ${(ds.data[i]/t*100).toFixed(1)}%`,fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],lineWidth:0,hidden:false,index:i}));}}},
+        generateLabels:chart=>{const ds=chart.data.datasets[0];const t=ds.data.reduce((a,b)=>a+b,0);return chart.data.labels.map((lbl,i)=>({text:`${lbl}  ${(ds.data[i]/t*100).toFixed(1)}%`,fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],fontColor:'#e8edf5',lineWidth:0,hidden:false,index:i}));}}},
       tooltip:{...TT,callbacks:{label:ctx=>{const g=sorted[ctx.dataIndex];const p=(g.cap/totAmt*100).toFixed(1);return[` ${p}% del capital`,` Capital: ${fmtE(g.cap)}`,` Clientes: ${g.n}`,` Interés: +${fmtE(g.int)}`];}}},
       datalabels:{color:'#ffffff',font:{family:'DM Mono',weight:'700',size:11},textStrokeColor:'rgba(0,0,0,.8)',textStrokeWidth:2,textShadowColor:'rgba(0,0,0,.9)',textShadowBlur:6,
         formatter:v=>{const p=v/totAmt*100;return p>=3?p.toFixed(1)+'%':'';},anchor:'center',align:'center'}}}});
