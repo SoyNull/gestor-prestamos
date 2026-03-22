@@ -856,8 +856,8 @@ function getCapitalDisponible(){return parseFloat(window.__capitalDisponible??lo
 function setCapitalDisponible(v){
   window.__capitalDisponible=v;
   localStorage.setItem('gp-capital-disponible',v);
-  // Async save to Supabase without blocking
-  db.from('configuracion').upsert([{clave:'capital_disponible',valor:String(v)}],{onConflict:'clave'}).catch(()=>{});
+  // Async save to Supabase without blocking (wrapped to avoid Supabase v2 .catch issue)
+  (async()=>{ try{ await db.from('configuracion').upsert([{clave:'capital_disponible',valor:String(v)}],{onConflict:'clave'}); }catch(e){} })();
 }
 async function saveCapitalQuick(){
   const inp=document.getElementById('cap-quick-input');
