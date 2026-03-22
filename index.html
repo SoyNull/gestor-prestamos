@@ -17,13 +17,13 @@ body::before{content:"";position:fixed;width:500px;height:500px;background:radia
 
 /* ── LOGIN ───────────────────────────────────────────────── */
 #login-screen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center}
-.login-box{background:var(--sur);border:1px solid var(--bor);border-radius:24px;padding:40px 36px;width:380px;max-width:94vw;text-align:center}
-.login-logo{font-size:2rem;font-weight:800;margin-bottom:6px}.login-logo span{color:var(--acc)}
-.login-sub{font-size:.82rem;color:var(--mut);margin-bottom:28px}
-.login-box input{width:100%;padding:13px 15px;background:var(--bg);border:1px solid var(--bor);border-radius:10px;color:var(--txt);font-family:"Syne",sans-serif;font-size:.95rem;outline:none;margin-bottom:12px;transition:border-color .2s;-webkit-appearance:none}
-.login-box input:focus{border-color:var(--acc)}
-.login-btn{width:100%;padding:13px;background:var(--acc);border:none;border-radius:10px;font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer;color:#000;margin-top:4px;transition:background .2s}
-.login-btn:hover{background:#00c886}
+.login-box{background:var(--sur);border:1px solid var(--bor);border-radius:24px;padding:48px 40px 40px;width:420px;max-width:94vw;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.login-logo{font-size:2.4rem;font-weight:800;margin-bottom:10px;letter-spacing:-1px}.login-logo span{color:var(--acc)}
+.login-sub{font-size:.84rem;color:var(--mut);margin-bottom:32px;line-height:1.5}
+.login-box input{width:100%;padding:13px 15px;background:#0f141e;border:1.5px solid var(--bor);border-radius:10px;color:var(--txt);font-family:"Syne",sans-serif;font-size:.95rem;outline:none;margin-bottom:12px;transition:border-color .2s,background .2s;-webkit-appearance:none}
+.login-box input:focus{border-color:var(--acc);background:#111820}
+.login-btn{width:100%;padding:14px;background:var(--acc);border:none;border-radius:10px;font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer;color:#000;margin-top:4px;transition:background .2s,transform .15s,box-shadow .15s;letter-spacing:.3px}
+.login-btn:hover{background:#00c886;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,229,160,.35)}
 .login-err{color:var(--dan);font-size:.78rem;margin-top:8px;min-height:18px}
 
 /* ── DESKTOP HEADER ──────────────────────────────────────── */
@@ -60,7 +60,7 @@ main{padding:24px 28px 36px;max-width:1300px;margin:0 auto;position:relative;z-i
 
 /* ── STATS ───────────────────────────────────────────────── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.scard{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);padding:16px;position:relative;overflow:hidden}
+.scard{background:var(--sur);border:1px solid var(--bor);border-radius:var(--rad);padding:16px;position:relative;overflow:hidden;transition:transform .18s,border-color .18s,box-shadow .18s;cursor:default}.scard:hover{transform:translateY(-2px);border-color:rgba(0,229,160,.25);box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .scard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--cc,var(--acc))}
 .slabel{font-size:.63rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
 .sval{font-size:1.5rem;font-weight:800;color:var(--cc,var(--acc));font-family:"DM Mono",monospace;line-height:1}
@@ -120,9 +120,9 @@ tbody td{padding:10px 11px;font-size:.8rem;vertical-align:middle}
 .btn-info{background:rgba(0,149,255,.12);color:var(--acc2);border:1px solid rgba(0,149,255,.25);padding:4px 9px;font-size:.7rem}
 
 /* ── SEARCH ──────────────────────────────────────────────── */
-.search-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.search-input,.filter-select{padding:9px 13px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;color:var(--txt);font-family:"Syne",sans-serif;font-size:.8rem;outline:none;transition:border-color .2s;-webkit-appearance:none}
-.search-input{flex:1;min-width:160px}.search-input:focus,.filter-select:focus{border-color:var(--acc)}
+.search-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.search-input,.filter-select{padding:9px 13px;background:var(--sur);border:1px solid var(--bor);border-radius:10px;color:var(--txt);font-family:"Syne",sans-serif;font-size:.8rem;outline:none;transition:border-color .2s;-webkit-appearance:none;height:40px}
+.search-input{flex:1;min-width:200px}.filter-select{flex-shrink:0;min-width:140px}.search-input:focus,.filter-select:focus{border-color:var(--acc)}
 
 /* ── MODAL / BOTTOM SHEET ────────────────────────────────── */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.73);backdrop-filter:blur(6px);z-index:200;display:none;align-items:flex-end;justify-content:center}
@@ -213,8 +213,8 @@ select option{background:var(--sur)}
 .abono-monto{font-family:"DM Mono",monospace;font-weight:700;color:var(--acc)}
 
 /* ── ALERTA VENCIDOS ─────────────────────────────────────── */
-.alert-venc{background:rgba(255,68,102,.08);border:1px solid rgba(255,68,102,.3);border-radius:var(--rad);padding:14px 18px;margin-bottom:14px}
-.alert-venc-title{font-size:.78rem;font-weight:700;color:var(--dan);margin-bottom:6px}
+.alert-venc{background:rgba(255,68,102,.07);border:1px solid rgba(255,68,102,.25);border-radius:var(--rad);padding:13px 16px;margin-bottom:14px}
+.alert-venc-title{font-size:.75rem;font-weight:700;color:var(--dan);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 
 /* ── TOAST ───────────────────────────────────────────────── */
 .toast{position:fixed;bottom:calc(var(--bnav) + var(--safe) + 12px);left:50%;transform:translateX(-50%) translateY(40px);background:var(--acc);color:#000;padding:9px 20px;border-radius:30px;font-weight:700;font-size:.8rem;z-index:400;opacity:0;transition:all .26s;white-space:nowrap}
@@ -733,13 +733,26 @@ function renderVencidosAlert(){
   const proxVenc = clientes.filter(c=>getStatus(c)!=='pagado' && daysUntil(c.fecha_vencimiento)<=3 && daysUntil(c.fecha_vencimiento)>=0);
   const vencidos = clientes.filter(c=>getStatus(c)!=='pagado' && daysUntil(c.fecha_vencimiento)<0 && c.fecha_vencimiento);
   const all = [
-    ...vencidos.map(c=>`🚨 VENCIDO: <b>${c.nombre}</b> — ${fmtDate(c.fecha_vencimiento)} · Saldo: ${fmtE(c.saldo)}`),
-    ...proxVenc.map(c=>`⏰ Vence en ${daysUntil(c.fecha_vencimiento)}d: <b>${c.nombre}</b> — ${fmtDate(c.fecha_vencimiento)}`),
-    ...proxAcuerdos.map(a=>`📅 Acuerdo en ${daysUntil(a.fecha_limite)}d: <b>${a.clientes?.nombre||''}</b> — ${fmtDate(a.fecha_limite)}`)
+    ...vencidos.map(c=>({icon:'🚨',text:`VENCIDO: <b>${c.nombre}</b> — ${fmtDate(c.fecha_vencimiento)} · Saldo: ${fmtE(c.saldo)}`,urgent:true})),
+    ...proxVenc.map(c=>({icon:'⏰',text:`Vence en <b>${daysUntil(c.fecha_vencimiento)}d</b>: ${c.nombre} — ${fmtDate(c.fecha_vencimiento)}`,urgent:false})),
+    ...proxAcuerdos.map(a=>({icon:'📅',text:`Acuerdo en <b>${daysUntil(a.fecha_limite)}d</b>: ${a.clientes?.nombre||''} — ${fmtDate(a.fecha_limite)}`,urgent:false}))
   ];
   const el=document.getElementById('vencidos-alert');
-  if(all.length){ el.style.display='block'; document.getElementById('vencidos-list').innerHTML=all.map(t=>`<div style="margin-bottom:3px">• ${t}</div>`).join(''); }
-  else el.style.display='none';
+  if(!all.length){ el.style.display='none'; return; }
+  el.style.display='block';
+  const SHOW=5, expanded=window.__alertExpanded;
+  const visible = expanded ? all : all.slice(0,SHOW);
+  const rest = all.length - SHOW;
+  document.getElementById('vencidos-list').innerHTML=
+    `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:4px 16px">`+
+    visible.map(t=>`<div style="display:flex;align-items:baseline;gap:5px;padding:2px 0">
+      <span>${t.icon}</span>
+      <span style="font-size:.73rem;color:${t.urgent?'var(--dan)':' var(--txt)'}">${t.text}</span>
+    </div>`).join('')+
+    '</div>'+
+    (all.length>SHOW?`<button onclick="window.__alertExpanded=!window.__alertExpanded;renderVencidosAlert()" style="margin-top:8px;background:transparent;border:1px solid rgba(255,68,102,.3);color:var(--dan);padding:4px 14px;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:Syne,sans-serif">
+      ${expanded?'▲ Ver menos':`▼ Ver ${rest} más (${all.length} en total)`}
+    </button>`:'');
 }
 
 // ── TABLA / TARJETAS CLIENTES ────────────────────────────
