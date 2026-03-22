@@ -2028,8 +2028,7 @@ function exportHistorial(){
     rows.push([a.tipo,a.descripcion,a.cliente_nombre||'',n(a.monto).toFixed(2),
       dt?dt.toLocaleDateString('es-ES'):'',dt?dt.toLocaleTimeString('es-ES'):'' ]);
   });
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('
-');
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,﻿'+encodeURIComponent(csv);
   a.download='historial_'+new Date().toISOString().slice(0,10)+'.csv';
