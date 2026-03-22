@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#0a0d12;--sur:#111620;--sur2:#181f2e;--bor:#1e2a3a;--acc:#00e5a0;--acc2:#0095ff;--acc3:#ff6b35;--txt:#e8edf5;--mut:#5a6a80;--dan:#ff4466;--gld:#f5c842;--rad:16px;--bnav:66px;--safe:env(safe-area-inset-bottom,0px)}
+:root{--bg:#0a0d12;--sur:#111620;--sur2:#181f2e;--bor:#1e2a3a;--acc:#00e5a0;--acc2:#0095ff;--acc3:#ff6b35;--txt:#e8edf5;--mut:#8a9ab5;--dan:#ff4466;--gld:#f5c842;--rad:16px;--bnav:66px;--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{font-family:"Syne",sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden}
@@ -292,7 +292,7 @@ select option{background:var(--sur)}
 .log-terminal{background:#0a0d12;border:1px solid #1e2a3a;border-radius:var(--rad);overflow:hidden;font-family:"DM Mono",monospace}
 .log-terminal-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#111620;border-bottom:1px solid #1e2a3a}
 .log-dot{width:10px;height:10px;border-radius:50%}
-.log-terminal-title{font-size:.72rem;color:#5a6a80;margin-left:4px;flex:1}
+.log-terminal-title{font-size:.72rem;color:#8a9ab5;margin-left:4px;flex:1}
 .log-feed{max-height:580px;overflow-y:auto;padding:4px 0}
 .log-line{display:flex;align-items:baseline;gap:0;padding:3px 14px;transition:background .1s;line-height:1.6}
 .log-line:hover{background:rgba(255,255,255,.03)}
@@ -307,7 +307,7 @@ select option{background:var(--sur)}
 .tag-edicion{background:rgba(0,149,255,.15);color:#0095ff}
 .tag-acuerdo{background:rgba(168,85,247,.15);color:#a855f7}
 .tag-capital{background:rgba(245,200,66,.15);color:#f5c842}
-.tag-otro{background:rgba(90,106,128,.15);color:#5a6a80}
+.tag-otro{background:rgba(90,106,128,.15);color:#8a9ab5}
 .hist-filters{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
 .hist-chip{padding:4px 12px;border-radius:6px;font-size:.68rem;font-weight:700;border:1px solid var(--bor);background:transparent;color:var(--mut);cursor:pointer;font-family:"DM Mono",monospace;transition:all .15s;letter-spacing:.5px;text-transform:uppercase}
 .hist-chip.active{background:rgba(0,229,160,.15);color:var(--acc);border-color:rgba(0,229,160,.4)}
@@ -1544,7 +1544,7 @@ function renderCharts(){
   const bCtx=document.getElementById('cBar').getContext('2d');if(cBar)cBar.destroy();
   cBar=new Chart(bCtx,{type:'bar',data:{labels:['Capital Prestado','Total Cobrado','Saldo Pendiente'],datasets:[{data:[totP,totPag,totSaldo],backgroundColor:['rgba(0,229,160,.2)','rgba(0,149,255,.2)','rgba(255,68,102,.2)'],borderColor:['#00e5a0','#0095ff','#ff4466'],borderWidth:2,borderRadius:8}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:ctx=>` ${fmtE(ctx.raw)}`}}},
-      scales:{x:{ticks:{color:'#5a6a80',font:{family:'DM Mono'},callback:v=>'€'+v.toLocaleString()},grid:{color:'#1e2a3a'},border:{color:'transparent'}},y:{ticks:{color:'#e8edf5',font:{family:'Syne',weight:'600',size:11}},grid:{display:false},border:{color:'transparent'}}}}});
+      scales:{x:{ticks:{color:'#e8edf5',font:{family:'DM Mono'},callback:v=>'€'+v.toLocaleString()},grid:{color:'#1e2a3a'},border:{color:'transparent'}},y:{ticks:{color:'#e8edf5',font:{family:'Syne',weight:'600',size:11}},grid:{display:false},border:{color:'transparent'}}}}});
 }
 
 // ── CAJA ─────────────────────────────────
@@ -1656,7 +1656,7 @@ function renderGastos(){
   const gCtx=document.getElementById('cGastos').getContext('2d');if(cGastos)cGastos.destroy();
   cGastos=new Chart(gCtx,{type:'bar',data:{labels:['Ingresos','Gastos','Neto'],datasets:[{data:[ingresos,gastosMes,neto],backgroundColor:[neto>=0?'rgba(0,229,160,.22)':'rgba(0,229,160,.22)','rgba(255,68,102,.22)',neto>=0?'rgba(0,149,255,.22)':'rgba(255,68,102,.15)'],borderColor:[neto>=0?'#00e5a0':'#00e5a0','#ff4466',neto>=0?'#0095ff':'#ff4466'],borderWidth:2,borderRadius:8}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:ctx=>` ${fmtE(ctx.raw)}`}}},
-      scales:{y:{ticks:{color:'#5a6a80',font:{family:'DM Mono'},callback:v=>'€'+v.toLocaleString()},grid:{color:'#1e2a3a'},border:{color:'transparent'}},x:{ticks:{color:'#e8edf5',font:{family:'Syne',weight:'600'}},grid:{display:false},border:{color:'transparent'}}}}});
+      scales:{y:{ticks:{color:'#e8edf5',font:{family:'DM Mono'},callback:v=>'€'+v.toLocaleString()},grid:{color:'#1e2a3a'},border:{color:'transparent'}},x:{ticks:{color:'#e8edf5',font:{family:'Syne',weight:'600'}},grid:{display:false},border:{color:'transparent'}}}}});
   const list=document.getElementById('gastos-list');
   list.innerHTML=gastos.slice(0,25).map(g=>`<div class="gasto-item">
     <div class="gasto-icon">${TIPO_ICON[g.tipo]||'💰'}</div>
@@ -2385,7 +2385,7 @@ function renderHistorial(){
     const dateLabel=date==='0000-00-00'?'unknown date':fmtDate(date);
     html+=`<div class="log-day-header">
       <span>── ${dateLabel} ──</span>
-      <span style="color:#5a6a80">${items.length} events${dayAbonos>0?` · +${fmtE(dayAbonos)} in`:''}${dayPrestamos>0?` · -${fmtE(dayPrestamos)} out`:''}</span>
+      <span style="color:#8a9ab5">${items.length} events${dayAbonos>0?` · +${fmtE(dayAbonos)} in`:''}${dayPrestamos>0?` · -${fmtE(dayPrestamos)} out`:''}</span>
     </div>`;
     items.forEach(a=>{
       const dt=a.created_at?new Date(a.created_at):null;
@@ -2393,7 +2393,7 @@ function renderHistorial(){
         `${dt.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})} ${dt.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`
         :'—';
       const tag=TAG[a.tipo]||{cls:'tag-otro',lbl:(a.tipo||'INFO').toUpperCase().slice(0,6)};
-      const amtColor=AMOUNT_COLOR[a.tipo]||'#5a6a80';
+      const amtColor=AMOUNT_COLOR[a.tipo]||'#e8edf5';
       const sign=SIGN[a.tipo]||'';
       const amtStr=n(a.monto)>0?`${sign}${fmtE(a.monto)}`:'';
       const clientPart=a.cliente_nombre?` [${a.cliente_nombre}]`:'';
