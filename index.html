@@ -163,7 +163,7 @@ tbody td{padding:9px 10px;font-size:.79rem;vertical-align:middle}
 /* ── MODAL ───────────────────────────────────── */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.73);backdrop-filter:blur(6px);z-index:200;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
-.modal{background:var(--sur);border:1px solid var(--bor);border-radius:22px 22px 0 0;padding:20px 20px calc(20px + var(--safe));width:100%;max-width:580px;animation:su .26s cubic-bezier(.32,.72,0,1);max-height:96vh;overflow-y:auto}
+.modal{background:var(--sur);border:1px solid var(--bor);border-radius:22px 22px 0 0;padding:20px 20px calc(20px + var(--safe));width:100%;max-width:580px;animation:su .26s cubic-bezier(.32,.72,0,1);max-height:96dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .handle{width:36px;height:4px;background:var(--bor);border-radius:2px;margin:0 auto 16px}
 .mtitle{font-size:1.05rem;font-weight:800;margin-bottom:14px}.mtitle span{color:var(--acc)}
@@ -288,7 +288,7 @@ select option{background:var(--sur)}
 /* ── MOBILE ──────────────────────────────────── */
 @media(max-width:640px){
   .dheader{display:none}.mheader{display:flex}.bnav{display:flex}.fab{display:flex}
-  main{padding:11px;padding-bottom:calc(var(--bnav) + var(--safe) + 72px)}
+  main{padding:12px 14px;padding-bottom:calc(var(--bnav) + var(--safe) + 76px)}
   .stats-bar{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
   .sval{font-size:1.2rem}.scard{padding:12px 12px}
   .cgrid{grid-template-columns:1fr;gap:9px;margin-bottom:11px}.ccard.fw{grid-column:1}.cwrap{height:190px}
@@ -300,7 +300,11 @@ select option{background:var(--sur)}
   .det-grid{grid-template-columns:1fr}
   .toast{bottom:calc(var(--bnav) + var(--safe) + 10px)}
   .frow{grid-template-columns:1fr}.frow3{grid-template-columns:1fr 1fr}
-  .filters-bar{gap:7px}.capital-banner{gap:12px}
+  .filters-bar{gap:7px;padding:10px}.capital-banner{gap:12px}
+  .filters-bar input,.filters-bar select{width:100%;flex:1 1 100%}
+  .fi-search{flex:1 1 100%}
+  .fi{flex:1 1 calc(50% - 4px)}
+  .filter-clear{width:100%}
 }
 @media(min-width:641px){
   .overlay{align-items:center}
@@ -497,9 +501,20 @@ select option{background:var(--sur)}
     <div class="sec-hdr"><div class="sec-title">💵 Caja &amp; Capital Rotativo</div></div>
     <!-- Capital inicial editable -->
     <div class="caja-edit-panel">
-      <label>Capital Inicial (€)</label>
-      <input type="number" id="cap-inicial-input" placeholder="0" inputmode="decimal" onchange="saveCapitalInicial()">
-      <span style="font-size:.76rem;color:var(--mut)">Base de tu fondo prestable</span>
+      <div style="margin-bottom:10px">
+        <div style="font-size:.64rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Capital inicial total (€)</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="number" id="cap-inicial-input" placeholder="Ej: 50000" inputmode="decimal"
+            onkeydown="if(event.key==='Enter')saveCapitalInicial()"
+            style="flex:1;min-width:160px;max-width:280px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--bor);border-radius:10px;color:var(--txt);font-family:Syne,sans-serif;font-size:1rem;outline:none;-webkit-appearance:none">
+          <button onclick="saveCapitalInicial()" style="padding:12px 22px;background:var(--acc);border:none;border-radius:10px;font-family:Syne,sans-serif;font-weight:800;font-size:.88rem;color:#000;cursor:pointer;white-space:nowrap;transition:background .2s" onmouseover="this.style.background='#00c886'" onmouseout="this.style.background='var(--acc)'">
+            💾 Guardar capital
+          </button>
+        </div>
+        <div style="font-size:.73rem;color:var(--mut);margin-top:7px;line-height:1.6">
+          💡 Este es el total de efectivo disponible para prestar. El sistema descuenta automáticamente cada préstamo activo y muestra cuánto puedes prestar hoy.
+        </div>
+      </div>
     </div>
     <!-- KPIs de caja -->
     <div class="caja-grid" id="caja-kpis"></div>
@@ -767,11 +782,12 @@ function doLogout(){sessionStorage.removeItem('gp-auth');location.reload();}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-screen').style.display!=='none')doLogin();});
 function showApp(){
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('app-header').style.display='flex';
-  document.getElementById('app-mheader').style.display='flex';
   document.getElementById('app-main').style.display='block';
-  document.getElementById('app-bnav').style.display='flex';
-  document.getElementById('app-fab').style.display='flex';
+  // Let CSS/media queries control responsive elements (remove inline overrides)
+  ['app-header','app-mheader','app-bnav','app-fab'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=''; // clear inline style → CSS takes over
+  });
 }
 if(sessionStorage.getItem('gp-auth')==='1'){showApp();setTimeout(loadAll,100);}
 
@@ -824,15 +840,29 @@ const n=v=>parseFloat(v||0);
 //  CAPITAL INICIAL (local)
 // ═══════════════════════════════════════
 function getCapitalInicial(){return parseFloat(window.__capitalInicial||localStorage.getItem('gp-capital-inicial')||'0');}
-async function saveCapitalInicial(){
-  const v=parseFloat(document.getElementById('cap-inicial-input').value)||0;
-  localStorage.setItem('gp-capital-inicial',v);
+async function saveCapitalQuick(){
+  const inp=document.getElementById('cap-quick-input');
+  if(!inp)return;
+  const v=parseFloat(inp.value)||0;
+  if(v<=0){inp.style.borderColor='var(--dan)';setTimeout(()=>inp.style.borderColor='var(--gld)',1500);return;}
   window.__capitalInicial=v;
-  // Also save to Supabase for cross-device sync
+  localStorage.setItem('gp-capital-inicial',v);
+  try{await db.from('configuracion').upsert([{clave:'capital_inicial',valor:String(v)}],{onConflict:'clave'});}catch(e){}
+  showToast('✅ Capital de '+fmtE(v)+' configurado — el disponible se actualizará automáticamente');
+  render();
+}
+async function saveCapitalInicial(){
+  const inp=document.getElementById('cap-inicial-input');
+  const v=parseFloat(inp?.value)||0;
+  if(v<=0){showToast('⚠ Ingresa un monto mayor a 0');return;}
+  window.__capitalInicial=v;
+  localStorage.setItem('gp-capital-inicial',v);
   try{
-    await db.from('configuracion').upsert([{clave:'capital_inicial',valor:String(v)}],{onConflict:'clave'});
-  }catch(e){/* table may not exist yet */}
-  render();showToast('✓ Capital inicial actualizado y sincronizado');
+    const{error}=await db.from('configuracion').upsert([{clave:'capital_inicial',valor:String(v)}],{onConflict:'clave'});
+    if(error) console.warn('Supabase save error:',error.message);
+  }catch(e){console.warn('Capital save warning:',e);}
+  render();
+  showToast('✅ Capital de '+fmtE(v)+' guardado — dashboard actualizado');
 }
 async function loadCapitalFromDB(){
   try{
@@ -931,32 +961,64 @@ function renderStats(){
 // ── CAPITAL BANNER ────────────────────────
 function renderCapitalBanner(){
   const ci=getCapitalInicial();
-  const enCalle=clientes.reduce((s,c)=>s+Math.max(0,n(c.saldo)),0);
+  // enCalle = suma del MONTO (efectivo real) de prestamos activos/parciales
+  // NO usamos saldo porque saldo incluye interés futuro que no ha salido del bolsillo
+  const activos=clientes.filter(c=>getStatus(c)!=='pagado');
+  const enCalle=activos.reduce((s,c)=>s+n(c.monto),0);
+  const totalRecuperado=clientes.reduce((s,c)=>s+n(c.pagado),0);
+  // Capital disponible: lo que queda sin prestar
   const disponible=Math.max(0,ci-enCalle);
+  const ganancias=clientes.reduce((s,c)=>s+n(c.total)-n(c.monto),0); // intereses totales esperados
+  const cobrado=clientes.reduce((s,c)=>s+n(c.pagado),0);
   const pct=ci>0?Math.min(100,(enCalle/ci)*100):0;
   const el=document.getElementById('cap-banner');if(!el)return;
-  if(ci===0){el.innerHTML=`<div style="font-size:.8rem;color:var(--mut)">💡 Ve a <b>Caja</b> para configurar tu capital inicial y ver cuánto tienes disponible para prestar.</div>`;return;}
+  if(ci===0){
+    el.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;width:100%">
+        <div>
+          <div style="font-size:1rem;font-weight:800;color:var(--gld);margin-bottom:4px">💵 Configura tu capital disponible</div>
+          <div style="font-size:.78rem;color:var(--mut);line-height:1.6">Define cuánto efectivo tienes para prestar. El sistema calculará automáticamente el disponible cada vez que registres un préstamo o recibas un pago.</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+          <input type="number" id="cap-quick-input" placeholder="Capital total €" inputmode="decimal"
+            onkeydown="if(event.key==='Enter')saveCapitalQuick()"
+            style="width:170px;padding:10px 12px;background:var(--bg);border:1.5px solid var(--gld);border-radius:10px;color:var(--txt);font-family:Syne,sans-serif;font-size:.9rem;outline:none;-webkit-appearance:none">
+          <button onclick="saveCapitalQuick()" style="padding:10px 18px;background:var(--gld);border:none;border-radius:10px;font-family:Syne,sans-serif;font-weight:800;font-size:.82rem;color:#000;cursor:pointer;white-space:nowrap">
+            Guardar →
+          </button>
+        </div>
+      </div>`;
+    return;
+  }
   el.innerHTML=`
     <div class="cap-item">
       <div class="cap-label">Capital Inicial</div>
       <div class="cap-val" style="color:var(--txt)">${fmtE(ci)}</div>
+      <div class="cap-sub" style="font-size:.62rem;color:var(--mut)">fondo total</div>
     </div>
     <div class="cap-item">
-      <div class="cap-label">En Calle</div>
+      <div class="cap-label">En Calle (${activos.length} préstamos)</div>
       <div class="cap-val" style="color:var(--dan)">${fmtE(enCalle)}</div>
+      <div class="cap-sub" style="font-size:.62rem;color:var(--mut)">efectivo prestado</div>
+    </div>
+    <div class="cap-item" style="border:1px solid rgba(0,229,160,.3);border-radius:12px;padding:8px 12px;background:rgba(0,229,160,.05)">
+      <div class="cap-label" style="color:var(--acc)">💵 Disponible</div>
+      <div class="cap-val" style="color:var(--acc);font-size:1.5rem">${fmtE(disponible)}</div>
+      <div class="cap-sub" style="font-size:.62rem;color:var(--mut)">${ci>0?((disponible/ci)*100).toFixed(1)+'% libre':''}</div>
     </div>
     <div class="cap-item">
-      <div class="cap-label">Disponible para prestar</div>
-      <div class="cap-val" style="color:var(--acc);font-size:1.4rem">${fmtE(disponible)}</div>
+      <div class="cap-label">Intereses esperados</div>
+      <div class="cap-val" style="color:var(--gld)">${fmtE(ganancias)}</div>
+      <div class="cap-sub" style="font-size:.62rem;color:var(--mut)">beneficio total</div>
     </div>
-    <div class="cap-bar-wrap">
-      <div style="display:flex;justify-content:space-between;font-size:.65rem;color:var(--mut);margin-bottom:3px">
-        <span>Capital en calle ${pct.toFixed(1)}%</span>
-        <span>Libre ${(100-pct).toFixed(1)}%</span>
+    <div style="grid-column:1/-1">
+      <div style="display:flex;justify-content:space-between;font-size:.63rem;color:var(--mut);margin-bottom:4px">
+        <span>💸 Prestado: <b style="color:var(--dan)">${pct.toFixed(1)}%</b></span>
+        <span>✅ Libre: <b style="color:var(--acc)">${(100-pct).toFixed(1)}%</b></span>
+        <button class="cap-edit-btn" onclick="go('caja',document.querySelector('.ntab:nth-child(3)'))">⚙ Configurar capital</button>
       </div>
       <div class="cap-bar-bg"><div class="cap-bar-fill" style="width:${pct}%"></div></div>
-    </div>
-    <button class="cap-edit-btn" onclick="go('caja',document.querySelector('.ntab:nth-child(3)'))">⚙ Configurar</button>`;
+    </div>`;
 }
 
 // ── ALERTA VENCIDOS COLAPSABLE ────────────
@@ -1120,8 +1182,10 @@ function renderCharts(){
 function renderCaja(){
   const ci=getCapitalInicial();
   const el=document.getElementById('cap-inicial-input');if(el)el.value=ci||'';
-  const enCalle=clientes.reduce((s,c)=>s+Math.max(0,n(c.saldo)),0);
-  const recuperado=clientes.reduce((s,c)=>s+n(c.pagado),0);
+  // enCalle = capital real (monto) de prestamos activos - efectivo que salió del bolsillo
+  const enCalle=clientes.filter(c=>getStatus(c)!=='pagado').reduce((s,c)=>s+n(c.monto),0);
+  const recuperado=clientes.filter(c=>getStatus(c)==='pagado').reduce((s,c)=>s+n(c.monto),0);
+  const abonadoParcial=clientes.filter(c=>getStatus(c)==='parcial').reduce((s,c)=>s+n(c.pagado),0);
   const disponible=Math.max(0,ci-enCalle);
   const intereses=clientes.reduce((s,c)=>s+n(c.total)-n(c.monto),0);
 
@@ -1129,7 +1193,7 @@ function renderCaja(){
   kpis.innerHTML=`
     <div class="caja-card" style="--cc:var(--acc)"><div class="caja-label">Capital Inicial</div><div class="caja-val">${fmtE(ci)}</div><div class="caja-sub">fondo total configurado</div></div>
     <div class="caja-card" style="--cc:var(--dan)"><div class="caja-label">En Calle (Saldo Pendiente)</div><div class="caja-val">${fmtE(enCalle)}</div><div class="caja-sub">capital bloqueado en préstamos</div></div>
-    <div class="caja-card" style="--cc:var(--acc2)"><div class="caja-label">Recuperado</div><div class="caja-val">${fmtE(recuperado)}</div><div class="caja-sub">abonos recibidos hasta hoy</div></div>
+    <div class="caja-card" style="--cc:var(--acc2)"><div class="caja-label">Capital Recuperado</div><div class="caja-val">${fmtE(recuperado)}</div><div class="caja-sub">préstamos liquidados</div></div>
     <div class="caja-card" style="--cc:var(--acc);background:rgba(0,229,160,.05)">
       <div class="caja-label">💵 Disponible para Prestar</div>
       <div class="caja-val" style="font-size:2rem">${fmtE(disponible)}</div>
@@ -1287,6 +1351,182 @@ function openDet(id){
     <div class="det-grid">
       <div class="det-card"><div class="det-card-label">Prestado</div><div class="det-card-val" style="color:var(--acc)">${fmtE(c.monto)}</div></div>
       <div class="det-card"><div class="det-card-label">Total a cobrar</div><div class="det-card-val" style="color:var(--gld)">${fmtE(c.total)}</div></div>
+      <div class="det-card"><div class="det-card-label">Cobrado</div><div class="det-card-val" style="color:var(--acc2)">${fmtE(c.pagado)}</div></div>
+      <div class="det-card"><div class="det-card-label">Saldo</div><div class="det-card-val" style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'}">${fmtE(Math.max(0,n(c.saldo)))}</div></div>
+      <div class="det-card"><div class="det-card-label">Cuotas</div><div class="det-card-val">${n(c.cuotas_pagadas)} / ${n(c.cuotas)} <span style="font-size:.7rem;color:var(--dan)">(${Math.max(0,n(c.cuotas)-n(c.cuotas_pagadas)).toFixed(2)} pend.)</span></div></div>
+      <div class="det-card"><div class="det-card-label">Plazo</div><div class="det-card-val">${PLAZO_L[c.plazo]||c.plazo}</div></div>
+    </div>
+    <div class="pbar" style="height:6px;margin-bottom:13px"><div class="pfill" style="width:${prog}%"></div></div>
+    ${c.cedula||c.direccion||c.referido_por?`<div style="font-size:.75rem;line-height:1.9;margin-bottom:11px;background:var(--sur2);padding:9px 12px;border-radius:10px">
+      ${c.cedula?`📄 Cédula: <b>${c.cedula}</b><br>`:''}${c.direccion?`📍 ${c.direccion}<br>`:''}${c.referido_por?`👤 Referido por: <b>${c.referido_por}</b>`:''}
+    </div>`:''}
+    ${c.ref_fam_nombre||c.ref_trab_nombre?`<div style="background:var(--sur2);border-radius:10px;padding:10px 12px;margin-bottom:11px;font-size:.75rem">
+      <div style="font-size:.61rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:6px">Referencias</div>
+      ${c.ref_fam_nombre?`<div>👨‍👩‍👧 <b>${c.ref_fam_nombre}</b>${c.ref_fam_telefono?` · <a href="tel:${c.ref_fam_telefono}" style="color:var(--acc2)">${c.ref_fam_telefono}</a>`:''}</div>`:''}
+      ${c.ref_trab_nombre?`<div style="margin-top:3px">💼 <b>${c.ref_trab_nombre}</b>${c.ref_trab_telefono?` · <a href="tel:${c.ref_trab_telefono}" style="color:var(--acc2)">${c.ref_trab_telefono}</a>`:''}</div>`:''}
+    </div>`:''}
+    ${c.notas?`<div style="font-size:.74rem;color:var(--mut);background:var(--sur2);padding:9px 12px;border-radius:9px;margin-bottom:11px">📝 ${c.notas}</div>`:''}
+    <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:7px">Historial (${ab.length} abonos)</div>
+    <div style="max-height:155px;overflow-y:auto;margin-bottom:13px">
+      ${ab.length?ab.map(a=>`<div class="abono-item"><div><div style="font-weight:700;font-size:.8rem">${fmtE(a.monto)}</div><div style="font-size:.66rem;color:var(--mut)">${fmtDate(a.fecha)}${a.notas?` · ${a.notas}`:''}</div></div><div class="abono-monto">✓</div></div>`).join(''):'<div style="font-size:.74rem;color:var(--mut)">Sin abonos aún</div>'}
+    </div>
+    <div style="display:flex;gap:7px">
+      <button class="btn btn-pay" onclick="closeDet();openPay('${c.id}')" style="flex:1;justify-content:center;padding:10px">€+ Abono</button>
+      <button class="btn btn-p btn-sm" onclick="closeDet();openEdit('${c.id}')" style="flex:1;justify-content:center;padding:10px">✏ Editar</button>
+    </div>`;
+  document.getElementById('det-overlay').classList.add('open');
+}
+function closeDet(){document.getElementById('det-overlay').classList.remove('open');}
+function detOvClick(e){if(e.target===document.getElementById('det-overlay'))closeDet();}
+
+// ══════════════════════════════════════
+//  MODAL CLIENTE
+// ══════════════════════════════════════
+function openM(){
+  editId=null;
+  document.getElementById('modal-title').innerHTML='Nuevo <span>Préstamo</span>';
+  document.getElementById('modal-save-btn').textContent='Guardar';
+  ['iname','iphone','iced','idir','iref','irfn','irft','irtn','irtt','iamt','iint','ipag','icuotas','ictspag','inotas','iasesor'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('ifecha').value=new Date().toISOString().slice(0,10);
+  document.getElementById('ivenc').value='';document.getElementById('iplazo').value='Me';
+  document.getElementById('preview').textContent='— ';
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('iname').focus(),80);
+}
+function openEdit(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;editId=id;
+  document.getElementById('modal-title').innerHTML='Editar <span>Préstamo</span>';
+  document.getElementById('modal-save-btn').textContent='Actualizar';
+  const map={iname:'nombre',iphone:'telefono',iced:'cedula',idir:'direccion',iref:'referido_por',
+    irfn:'ref_fam_nombre',irft:'ref_fam_telefono',irtn:'ref_trab_nombre',irtt:'ref_trab_telefono',
+    iamt:'monto',iint:'interes',ipag:'pagado',icuotas:'cuotas',ictspag:'cuotas_pagadas',
+    inotas:'notas',iasesor:'asesor',ifecha:'fecha_prestamo',ivenc:'fecha_vencimiento',iplazo:'plazo'};
+  Object.entries(map).forEach(([elId,key])=>{const el=document.getElementById(elId);if(el)el.value=c[key]||'';});
+  updP();document.getElementById('overlay').classList.add('open');
+}
+function closeM(){document.getElementById('overlay').classList.remove('open');}
+function overlayClick(e){if(e.target===document.getElementById('overlay'))closeM();}
+function updP(){
+  const a=parseFloat(document.getElementById('iamt').value)||0;
+  const i=parseFloat(document.getElementById('iint').value)||0;
+  const p=parseFloat(document.getElementById('ipag').value)||0;
+  const total=a*(1+i/100),saldo=total-p;
+  document.getElementById('preview').textContent=a?`Total: ${fmtE(total)} · Saldo: ${fmtE(saldo)} · Interés: ${fmtE(total-a)}`:'— ';
+}
+async function saveClient(){
+  const nombre=document.getElementById('iname').value.trim();
+  const monto=parseFloat(document.getElementById('iamt').value);
+  if(!nombre){showToast('⚠ Ingresa el nombre');return;}
+  if(!monto||monto<0){showToast('⚠ Monto inválido');return;}
+  const pct=parseFloat(document.getElementById('iint').value)||0;
+  const pagado=parseFloat(document.getElementById('ipag').value)||0;
+  const total=parseFloat((monto*(1+pct/100)).toFixed(2));
+  const saldo=parseFloat((total-pagado).toFixed(2));
+  const ci=editId?(clientes.find(c=>c.id===editId)?.ci||0):clientes.length%AVC.length;
+  const obj={nombre,telefono:document.getElementById('iphone').value,cedula:document.getElementById('iced').value,
+    direccion:document.getElementById('idir').value,referido_por:document.getElementById('iref').value,
+    ref_fam_nombre:document.getElementById('irfn').value,ref_fam_telefono:document.getElementById('irft').value,
+    ref_trab_nombre:document.getElementById('irtn').value,ref_trab_telefono:document.getElementById('irtt').value,
+    fecha_prestamo:document.getElementById('ifecha').value||null,fecha_vencimiento:document.getElementById('ivenc').value||null,
+    plazo:document.getElementById('iplazo').value,monto,interes:pct,total,pagado,saldo,
+    cuotas:parseFloat(document.getElementById('icuotas').value)||0,cuotas_pagadas:parseFloat(document.getElementById('ictspag').value)||0,
+    notas:document.getElementById('inotas').value,
+    asesor:document.getElementById('iasesor')?.value||'',ci};
+  showLoad();
+  try{
+    if(editId){await db.from('clientes').update(obj).eq('id',editId);showToast('✓ Actualizado');}
+    else{await db.from('clientes').insert([obj]);showToast('✓ Préstamo guardado');}
+    closeM();await loadAll();
+  }catch(e){showToast('Error: '+e.message);console.error(e);}
+  hideLoad();
+}
+
+// ══════════════════════════════════════
+//  ABONOS
+// ══════════════════════════════════════
+function openPay(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;payId=id;
+  document.getElementById('pay-info').innerHTML=`
+    <div style="font-weight:700;font-size:.84rem;margin-bottom:3px">${c.nombre}</div>
+    <div>Saldo: <span style="color:var(--dan);font-weight:800;font-family:'DM Mono',monospace">${fmtE(c.saldo)}</span></div>
+    <div style="font-size:.67rem;color:var(--mut)">Total: ${fmtE(c.total)} · Cobrado: ${fmtE(c.pagado)}</div>`;
+  document.getElementById('pay-amount').value='';
+  document.getElementById('pay-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('pay-notes').value='';
+  document.getElementById('pay-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('pay-amount').focus(),80);
+}
+function closePay(){document.getElementById('pay-overlay').classList.remove('open');payId=null;}
+function payOvClick(e){if(e.target===document.getElementById('pay-overlay'))closePay();}
+async function confirmPay(){
+  const c=clientes.find(x=>x.id===payId);if(!c)return;
+  const monto=parseFloat(document.getElementById('pay-amount').value)||0;
+  if(monto<=0){showToast('⚠ Ingresa monto > 0');return;}
+  showLoad();
+  try{
+    const newPag=parseFloat((n(c.pagado)+monto).toFixed(2));
+    const newSaldo=parseFloat((n(c.total)-newPag).toFixed(2));
+    await db.from('clientes').update({pagado:newPag,saldo:newSaldo}).eq('id',payId);
+    await db.from('abonos').insert([{cliente_id:payId,monto,fecha:document.getElementById('pay-date').value||new Date().toISOString().slice(0,10),notas:document.getElementById('pay-notes').value}]);
+    showToast(`✓ Abono de ${fmtE(monto)} registrado`);closePay();await loadAll();
+  }catch(e){showToast('Error');console.error(e);}
+  hideLoad();
+}
+async function del(id){
+  if(!confirm('¿Eliminar este préstamo y sus abonos?'))return;
+  showLoad();await db.from('clientes').delete().eq('id',id);await loadAll();showToast('Eliminado');hideLoad();
+}
+
+// ══════════════════════════════════════
+//  ACUERDOS
+// ══════════════════════════════════════
+function openAcuerdo(){
+  const sel=document.getElementById('ac-cliente');
+  sel.innerHTML='<option value="">Seleccionar...</option>'+[...clientes].sort((a,b)=>a.nombre.localeCompare(b.nombre,'es')).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
+  ['ac-fecha','ac-monto','ac-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('acuerdo-overlay').classList.add('open');
+}
+function closeAcuerdo(){document.getElementById('acuerdo-overlay').classList.remove('open');}
+function acuerdoOvClick(e){if(e.target===document.getElementById('acuerdo-overlay'))closeAcuerdo();}
+async function saveAcuerdo(){
+  const cId=document.getElementById('ac-cliente').value,fecha=document.getElementById('ac-fecha').value;
+  if(!cId||!fecha){showToast('⚠ Cliente y fecha requeridos');return;}
+  showLoad();
+  try{await db.from('acuerdos').insert([{cliente_id:cId,fecha_limite:fecha,monto_acordado:parseFloat(document.getElementById('ac-monto').value)||0,descripcion:document.getElementById('ac-desc').value}]);closeAcuerdo();await loadAll();showToast('✓ Acuerdo creado');}
+  catch(e){showToast('Error');}
+  hideLoad();
+}
+async function markAcuerdo(id,v){showLoad();await db.from('acuerdos').update({cumplido:v}).eq('id',id);await loadAll();showToast(v?'✓ Cumplido':'Desmarcado');hideLoad();}
+async function delAcuerdo(id){if(!confirm('¿Eliminar acuerdo?'))return;showLoad();await db.from('acuerdos').delete().eq('id',id);await loadAll();showToast('Eliminado');hideLoad();}
+
+// ══════════════════════════════════════
+//  GASTOS
+// ══════════════════════════════════════
+function openGasto(){
+  ['g-monto','g-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('g-tipo').value='ingreso';document.getElementById('g-cat').value='intereses';
+  document.getElementById('g-fecha').value=new Date().toISOString().slice(0,10);document.getElementById('g-recurrente').value='false';
+  document.getElementById('gasto-overlay').classList.add('open');
+}
+function closeGasto(){document.getElementById('gasto-overlay').classList.remove('open');}
+function gastoOvClick(e){if(e.target===document.getElementById('gasto-overlay'))closeGasto();}
+async function saveGasto(){
+  const desc=document.getElementById('g-desc').value.trim(),monto=parseFloat(document.getElementById('g-monto').value);
+  if(!desc||!monto){showToast('⚠ Descripción y monto requeridos');return;}
+  showLoad();
+  try{await db.from('gastos').insert([{tipo:document.getElementById('g-tipo').value,categoria:document.getElementById('g-cat').value,descripcion:desc,monto,fecha:document.getElementById('g-fecha').value,recurrente:document.getElementById('g-recurrente').value==='true'}]);closeGasto();await loadAll();showToast('✓ Registrado');}
+  catch(e){showToast('Error');}
+  hideLoad();
+}
+async function delGasto(id){showLoad();await db.from('gastos').delete().eq('id',id);await loadAll();showToast('Eliminado');hideLoad();}
+
+// ══════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+</script>
+</body>
+</html>div class="det-card"><div class="det-card-label">Total a cobrar</div><div class="det-card-val" style="color:var(--gld)">${fmtE(c.total)}</div></div>
       <div class="det-card"><div class="det-card-label">Cobrado</div><div class="det-card-val" style="color:var(--acc2)">${fmtE(c.pagado)}</div></div>
       <div class="det-card"><div class="det-card-label">Saldo</div><div class="det-card-val" style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'}">${fmtE(Math.max(0,n(c.saldo)))}</div></div>
       <div class="det-card"><div class="det-card-label">Cuotas</div><div class="det-card-val">${n(c.cuotas_pagadas)} / ${n(c.cuotas)} <span style="font-size:.7rem;color:var(--dan)">(${Math.max(0,n(c.cuotas)-n(c.cuotas_pagadas)).toFixed(2)} pend.)</span></div></div>
