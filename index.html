@@ -329,6 +329,50 @@ select option{background:var(--sur)}
   .rep-row-val,.rep-total-val,.rep-kpi-val,.cap-val{color:#000!important}
   main{padding:8px!important}
 }
+/* ── CLIENTE SEARCH / SELECTOR ──────────────────────────────── */
+.client-search-wrap{position:relative;margin-bottom:14px}
+.client-search-input{width:100%;padding:11px 40px 11px 38px;background:var(--bg);border:1.5px solid rgba(0,149,255,.4);border-radius:10px;color:var(--txt);font-family:"Syne",sans-serif;font-size:.88rem;outline:none;transition:all .2s;-webkit-appearance:none}
+.client-search-input:focus{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(0,149,255,.1)}
+.client-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none}
+.client-search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--mut);cursor:pointer;font-size:1rem;padding:2px 6px;border-radius:5px;display:none}
+.client-search-clear.show{display:block}
+.client-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--sur);border:1px solid var(--bor);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:300;max-height:220px;overflow-y:auto;display:none}
+.client-dropdown.open{display:block}
+.client-drop-item{display:flex;align-items:center;gap:10px;padding:10px 13px;cursor:pointer;transition:background .12s;border-bottom:1px solid rgba(30,42,58,.3)}
+.client-drop-item:last-child{border-bottom:none}
+.client-drop-item:hover{background:var(--sur2)}
+.client-drop-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;flex-shrink:0}
+.client-drop-body{flex:1;min-width:0}
+.client-drop-name{font-size:.84rem;font-weight:700;color:var(--txt)}
+.client-drop-meta{font-size:.66rem;color:var(--mut);margin-top:1px}
+.client-drop-badge{font-size:.62rem;padding:2px 7px;border-radius:10px;font-weight:700;flex-shrink:0}
+.client-drop-empty{padding:14px;text-align:center;font-size:.78rem;color:var(--mut)}
+.client-drop-new{display:flex;align-items:center;gap:8px;padding:10px 13px;cursor:pointer;background:rgba(0,229,160,.05);border-top:1px solid rgba(0,229,160,.2);color:var(--acc);font-size:.82rem;font-weight:700}
+.client-drop-new:hover{background:rgba(0,229,160,.1)}
+/* Selected client banner */
+.selected-client-banner{display:none;background:rgba(0,149,255,.07);border:1px solid rgba(0,149,255,.3);border-radius:10px;padding:10px 13px;margin-bottom:14px;align-items:center;gap:10px}
+.selected-client-banner.show{display:flex}
+.scb-info{flex:1;min-width:0}
+.scb-name{font-weight:800;font-size:.86rem;color:var(--acc2)}
+.scb-meta{font-size:.68rem;color:var(--mut);margin-top:2px}
+.scb-clear{background:none;border:none;color:var(--mut);cursor:pointer;font-size:.8rem;padding:4px 8px;border-radius:6px;font-family:"Syne",sans-serif;font-weight:700}
+.scb-clear:hover{color:var(--dan)}
+/* Client profile in detalle — tabs */
+.profile-tabs{display:flex;gap:0;background:var(--sur2);border-radius:10px;padding:3px;margin-bottom:14px;overflow:hidden}
+.ptab{flex:1;padding:7px 10px;border:none;background:transparent;color:var(--mut);font-family:"Syne",sans-serif;font-weight:700;font-size:.74rem;border-radius:8px;cursor:pointer;transition:all .15s;text-align:center}
+.ptab.active{background:var(--sur);color:var(--txt);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.ptab-panel{display:none}.ptab-panel.active{display:block}
+/* Historial préstamos en perfil */
+.loan-card{background:var(--sur2);border:1px solid var(--bor);border-radius:12px;padding:12px 14px;margin-bottom:8px;position:relative;overflow:hidden}
+.loan-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--lc,var(--bor))}
+.loan-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px}
+.loan-card-monto{font-family:"DM Mono",monospace;font-weight:800;font-size:1rem}
+.loan-card-fecha{font-size:.66rem;color:var(--mut);margin-top:2px}
+.loan-card-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:.72rem}
+.loan-card-stat{background:rgba(0,0,0,.15);border-radius:7px;padding:5px 8px;text-align:center}
+.loan-card-stat-label{font-size:.58rem;color:var(--mut);text-transform:uppercase;letter-spacing:.8px}
+.loan-card-stat-val{font-weight:800;font-family:"DM Mono",monospace;margin-top:2px}
+
 @media(max-width:640px){
   .dheader{display:none}.mheader{display:flex}.bnav{display:flex}.fab{display:flex}
   main{padding:12px 14px;padding-bottom:calc(var(--bnav) + var(--safe) + 76px)}
@@ -797,6 +841,27 @@ select option{background:var(--sur)}
  <div class="modal">
   <div class="handle"></div>
   <div class="mtitle" id="modal-title">Nuevo <span>Préstamo</span></div>
+
+  <!-- BUSCAR CLIENTE EXISTENTE -->
+  <div class="selected-client-banner" id="selected-client-banner">
+    <div id="scb-avatar" style="font-size:1.4rem">👤</div>
+    <div class="scb-info">
+      <div class="scb-name" id="scb-name">—</div>
+      <div class="scb-meta" id="scb-meta">Datos del cliente cargados</div>
+    </div>
+    <button class="scb-clear" onclick="clearSelectedClient()">✕ Cambiar</button>
+  </div>
+  <div class="client-search-wrap" id="client-search-wrap">
+    <span class="client-search-icon">🔍</span>
+    <input type="text" class="client-search-input" id="client-search-input"
+      placeholder="Buscar cliente existente o escribir nombre nuevo..."
+      oninput="onClientSearch(this.value)"
+      onblur="setTimeout(()=>closeClientDrop(),180)"
+      autocomplete="off"/>
+    <button class="client-search-clear" id="client-search-clear" onclick="clearClientSearch()">✕</button>
+    <div class="client-dropdown" id="client-dropdown"></div>
+  </div>
+
   <div class="section-sep">📋 Datos del cliente</div>
   <div class="fg"><label>Nombre completo *</label><input type="text" id="iname" placeholder="Ej: Juan García Pérez" autocomplete="off"/></div>
   <div class="frow">
@@ -838,6 +903,7 @@ select option{background:var(--sur)}
     <div class="fg"><label>Notas</label><textarea id="inotas" placeholder="Observaciones..." style="min-height:44px"></textarea></div>
   </div>
   <div class="fg"><label>Resumen</label><div class="preview-box" id="preview">— </div></div>
+  <input type="hidden" id="ibase_id" value="">
   <div class="mfooter">
     <button class="btn btn-g" onclick="closeM()">Cancelar</button>
     <button class="btn btn-p" id="modal-save-btn" onclick="saveClient()">Guardar</button>
@@ -1590,46 +1656,138 @@ function renderMensual(){
 // ══════════════════════════════════════
 function openDet(id){
   const c=clientes.find(x=>x.id===id);if(!c)return;
-  const col=colFor(c);const ab=abonosPor[id]||[];const st=getStatus(c);
+  const col=colFor(c);
+  const ab=abonosPor[id]||[];
+  const st=getStatus(c);
   const prog=n(c.total)>0?Math.min(100,(n(c.pagado)/n(c.total)*100)).toFixed(0):0;
-  const waMsg=encodeURIComponent(`Hola ${c.nombre.split(' ')[0]}, le recordamos su préstamo de ${fmtE(c.monto)}. Saldo pendiente: ${fmtE(c.saldo)}. Vencimiento: ${fmtDate(c.fecha_vencimiento)}. Gracias.`);
+  const waMsg=encodeURIComponent(`Hola ${c.nombre.split(' ')[0]}, le recordamos su préstamo de ${fmtE(c.monto)} con vencimiento el ${fmtDate(c.fecha_vencimiento)}. Saldo pendiente: ${fmtE(c.saldo)}.`);
   const telLimpio=(c.telefono||'').replace(/\D/g,'');
+
+  // Get ALL loans for this client (same base_id OR same nombre)
+  const baseId=c.cliente_base_id||c.id;
+  const allLoans=clientes.filter(x=>
+    x.id===id ||
+    (x.cliente_base_id&&x.cliente_base_id===baseId) ||
+    (c.cliente_base_id&&x.id===c.cliente_base_id) ||
+    (!c.cliente_base_id&&!x.cliente_base_id&&x.nombre===c.nombre&&x.id!==id)
+  ).sort((a,b)=>new Date(b.fecha_prestamo||0)-new Date(a.fecha_prestamo||0));
+
+  // Total across all loans
+  const totalPrestado=allLoans.reduce((s,l)=>s+n(l.monto),0);
+  const totalPagado=allLoans.reduce((s,l)=>s+n(l.pagado),0);
+  const totalSaldo=allLoans.reduce((s,l)=>s+Math.max(0,n(l.saldo)),0);
+  const allAbClient=allLoans.flatMap(l=>abonosPor[l.id]||[]).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+
+  const loanCards=allLoans.map(l=>{
+    const lst=getStatus(l);const lp=n(l.total)>0?Math.min(100,(n(l.pagado)/n(l.total)*100)).toFixed(0):0;
+    const lc=lst==='pagado'?'var(--acc)':lst==='parcial'?'var(--gld)':'var(--dan)';
+    const isCurrent=l.id===id;
+    return`<div class="loan-card" style="--lc:${lc}${isCurrent?';border-color:rgba(0,149,255,.4)':''}">
+      ${isCurrent?'<div style="position:absolute;top:6px;right:8px;font-size:.6rem;background:rgba(0,149,255,.15);color:var(--acc2);padding:2px 7px;border-radius:10px;font-weight:700">ACTIVO</div>':''}
+      <div class="loan-card-header">
+        <div>
+          <div class="loan-card-monto" style="color:${lc}">${fmtE(l.monto)}</div>
+          <div class="loan-card-fecha">${fmtDate(l.fecha_prestamo)} → ${fmtDate(l.fecha_vencimiento)} · ${l.interes}% · ${PLAZO_L[l.plazo]||l.plazo}</div>
+        </div>
+        <div style="text-align:right">${badge(lst)}</div>
+      </div>
+      <div class="loan-card-grid">
+        <div class="loan-card-stat"><div class="loan-card-stat-label">Total</div><div class="loan-card-stat-val" style="color:var(--gld)">${fmtE(l.total)}</div></div>
+        <div class="loan-card-stat"><div class="loan-card-stat-label">Pagado</div><div class="loan-card-stat-val" style="color:var(--acc2)">${fmtE(l.pagado)}</div></div>
+        <div class="loan-card-stat"><div class="loan-card-stat-label">Saldo</div><div class="loan-card-stat-val" style="color:${lc}">${fmtE(Math.max(0,n(l.saldo)))}</div></div>
+      </div>
+      <div style="height:3px;background:var(--bor);border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:${lp}%;background:${lc};border-radius:2px;transition:width .4s"></div></div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button class="btn btn-pay" onclick="closeDet();openPay('${l.id}')" style="font-size:.68rem;padding:4px 10px">€+ Abono</button>
+        <button class="btn btn-p btn-sm" onclick="closeDet();openEdit('${l.id}')" style="font-size:.68rem;padding:4px 10px">✏ Editar</button>
+      </div>
+    </div>`;
+  }).join('');
+
   document.getElementById('det-content').innerHTML=`
     <div class="det-header">
       <div class="det-avatar" style="background:${col[0]};color:${col[1]}">${ini(c.nombre)}</div>
-      <div><div class="det-name">${c.nombre}</div><div class="det-phone">${c.telefono||'Sin teléfono'}</div><div style="margin-top:4px">${badge(st)}</div></div>
+      <div style="flex:1;min-width:0">
+        <div class="det-name">${c.nombre}</div>
+        <div class="det-phone">${c.telefono||'Sin teléfono'}</div>
+        <div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap">${badge(st)}
+          ${allLoans.length>1?`<span style="background:rgba(245,200,66,.12);color:var(--gld);padding:2px 8px;border-radius:10px;font-size:.62rem;font-weight:700">${allLoans.length} préstamos</span>`:''}
+        </div>
+      </div>
+      <button class="btn btn-p btn-sm" onclick="closeDet();openNewLoanForClient('${id}')" style="font-size:.72rem;white-space:nowrap">+ Nuevo préstamo</button>
     </div>
+
     ${c.telefono?`<div class="contact-btns">
       <a class="btn-wa" href="https://wa.me/${telLimpio}?text=${waMsg}" target="_blank">💬 WhatsApp</a>
       <a class="btn-call" href="tel:${c.telefono}">📞 Llamar</a>
-    </div>`:'<div style="font-size:.74rem;color:var(--mut);margin-bottom:12px">Sin teléfono — edita el cliente para añadirlo</div>'}
-    <div class="det-grid">
-      <div class="det-card"><div class="det-card-label">Prestado</div><div class="det-card-val" style="color:var(--acc)">${fmtE(c.monto)}</div></div>
-      <div class="det-card"><div class="det-card-label">Total a cobrar</div><div class="det-card-val" style="color:var(--gld)">${fmtE(c.total)}</div></div>
-      <div class="det-card"><div class="det-card-label">Cobrado</div><div class="det-card-val" style="color:var(--acc2)">${fmtE(c.pagado)}</div></div>
-      <div class="det-card"><div class="det-card-label">Saldo</div><div class="det-card-val" style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'}">${fmtE(Math.max(0,n(c.saldo)))}</div></div>
-      <div class="det-card"><div class="det-card-label">Cuotas</div><div class="det-card-val">${n(c.cuotas_pagadas)} / ${n(c.cuotas)} <span style="font-size:.7rem;color:var(--dan)">(${Math.max(0,n(c.cuotas)-n(c.cuotas_pagadas)).toFixed(2)} pend.)</span></div></div>
-      <div class="det-card"><div class="det-card-label">Plazo</div><div class="det-card-val">${PLAZO_L[c.plazo]||c.plazo}</div></div>
-    </div>
-    <div class="pbar" style="height:6px;margin-bottom:13px"><div class="pfill" style="width:${prog}%"></div></div>
-    ${c.cedula||c.direccion||c.referido_por?`<div style="font-size:.75rem;line-height:1.9;margin-bottom:11px;background:var(--sur2);padding:9px 12px;border-radius:10px">
-      ${c.cedula?`📄 Cédula: <b>${c.cedula}</b><br>`:''}${c.direccion?`📍 ${c.direccion}<br>`:''}${c.referido_por?`👤 Referido por: <b>${c.referido_por}</b>`:''}
     </div>`:''}
-    ${c.ref_fam_nombre||c.ref_trab_nombre?`<div style="background:var(--sur2);border-radius:10px;padding:10px 12px;margin-bottom:11px;font-size:.75rem">
-      <div style="font-size:.61rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:6px">Referencias</div>
-      ${c.ref_fam_nombre?`<div>👨‍👩‍👧 <b>${c.ref_fam_nombre}</b>${c.ref_fam_telefono?` · <a href="tel:${c.ref_fam_telefono}" style="color:var(--acc2)">${c.ref_fam_telefono}</a>`:''}</div>`:''}
-      ${c.ref_trab_nombre?`<div style="margin-top:3px">💼 <b>${c.ref_trab_nombre}</b>${c.ref_trab_telefono?` · <a href="tel:${c.ref_trab_telefono}" style="color:var(--acc2)">${c.ref_trab_telefono}</a>`:''}</div>`:''}
-    </div>`:''}
-    ${c.notas?`<div style="font-size:.74rem;color:var(--mut);background:var(--sur2);padding:9px 12px;border-radius:9px;margin-bottom:11px">📝 ${c.notas}</div>`:''}
-    <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:7px">Historial (${ab.length} abonos)</div>
-    <div style="max-height:155px;overflow-y:auto;margin-bottom:13px">
-      ${ab.length?ab.map(a=>`<div class="abono-item"><div><div style="font-weight:700;font-size:.8rem">${fmtE(a.monto)}</div><div style="font-size:.66rem;color:var(--mut)">${fmtDate(a.fecha)}${a.notas?` · ${a.notas}`:''}</div></div><div class="abono-monto">✓</div></div>`).join(''):'<div style="font-size:.74rem;color:var(--mut)">Sin abonos aún</div>'}
+
+    <!-- Tabs -->
+    <div class="profile-tabs">
+      <button class="ptab active" onclick="switchProfileTab('resumen',this)">📊 Resumen</button>
+      <button class="ptab" onclick="switchProfileTab('prestamos',this)">💳 Préstamos (${allLoans.length})</button>
+      <button class="ptab" onclick="switchProfileTab('abonos',this)">💚 Pagos (${allAbClient.length})</button>
+      <button class="ptab" onclick="switchProfileTab('datos',this)">👤 Datos</button>
     </div>
-    <div style="display:flex;gap:7px">
-      <button class="btn btn-pay" onclick="closeDet();openPay('${c.id}')" style="flex:1;justify-content:center;padding:10px">€+ Abono</button>
-      <button class="btn btn-p btn-sm" onclick="closeDet();openEdit('${c.id}')" style="flex:1;justify-content:center;padding:10px">✏ Editar</button>
+
+    <!-- TAB: RESUMEN -->
+    <div class="ptab-panel active" id="ptab-resumen">
+      <div class="det-grid" style="margin-bottom:12px">
+        <div class="det-card"><div class="det-card-label">Total prestado</div><div class="det-card-val" style="color:var(--acc)">${fmtE(totalPrestado)}</div></div>
+        <div class="det-card"><div class="det-card-label">Total pagado</div><div class="det-card-val" style="color:var(--acc2)">${fmtE(totalPagado)}</div></div>
+        <div class="det-card"><div class="det-card-label">Saldo total</div><div class="det-card-val" style="color:${totalSaldo<=0?'var(--acc)':'var(--dan)'}">${fmtE(totalSaldo)}</div></div>
+        <div class="det-card"><div class="det-card-label">Préstamos</div><div class="det-card-val" style="color:var(--txt)">${allLoans.length}</div></div>
+      </div>
+      <div class="pbar" style="height:6px;margin-bottom:4px"><div class="pfill" style="width:${prog}%"></div></div>
+      <div style="font-size:.68rem;color:var(--mut);text-align:right;margin-bottom:12px">${prog}% pagado del préstamo actual</div>
+      <!-- Latest loan summary -->
+      <div style="font-size:.7rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Préstamo actual</div>
+      ${loanCards.slice(0,1)}
+    </div>
+
+    <!-- TAB: PRÉSTAMOS -->
+    <div class="ptab-panel" id="ptab-prestamos">
+      ${allLoans.length?loanCards:`<div class="empty" style="padding:20px"><p>Sin préstamos registrados</p></div>`}
+    </div>
+
+    <!-- TAB: PAGOS/ABONOS -->
+    <div class="ptab-panel" id="ptab-abonos">
+      ${allAbClient.length?`<div style="max-height:260px;overflow-y:auto">`+allAbClient.map(a=>{
+        const loan=clientes.find(x=>x.id===a.cliente_id);
+        return`<div class="abono-item">
+          <div>
+            <div style="font-weight:700;font-size:.82rem">${fmtE(a.monto)}</div>
+            <div class="abono-fecha">${fmtDate(a.fecha)}${a.notas?` · ${a.notas}`:''}${loan&&allLoans.length>1?` · Préstamo ${fmtE(loan.monto)}`:''}
+            </div>
+          </div>
+          <div class="abono-monto">✓</div>
+        </div>`;
+      }).join('')+'</div>':`<div class="empty" style="padding:20px"><p>Sin pagos registrados aún</p></div>`}
+    </div>
+
+    <!-- TAB: DATOS PERSONALES -->
+    <div class="ptab-panel" id="ptab-datos">
+      ${c.cedula||c.direccion||c.referido_por?`<div style="font-size:.76rem;line-height:2;margin-bottom:12px;background:var(--sur2);padding:10px 13px;border-radius:10px">
+        ${c.cedula?`📄 Cédula: <b>${c.cedula}</b><br>`:''}
+        ${c.direccion?`📍 ${c.direccion}<br>`:''}
+        ${c.referido_por?`👤 Referido por: <b>${c.referido_por}</b>`:''}
+      </div>`:'<div style="font-size:.76rem;color:var(--mut);margin-bottom:10px">Sin datos adicionales</div>'}
+      ${c.ref_fam_nombre||c.ref_trab_nombre?`<div style="background:var(--sur2);border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:.76rem">
+        <div style="font-size:.62rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:6px">Referencias</div>
+        ${c.ref_fam_nombre?`<div>👨‍👩‍👧 ${c.ref_fam_nombre}${c.ref_fam_telefono?` · <a href="tel:${c.ref_fam_telefono}" style="color:var(--acc2)">${c.ref_fam_telefono}</a>`:''}</div>`:''}
+        ${c.ref_trab_nombre?`<div style="margin-top:4px">💼 ${c.ref_trab_nombre}${c.ref_trab_telefono?` · <a href="tel:${c.ref_trab_telefono}" style="color:var(--acc2)">${c.ref_trab_telefono}</a>`:''}</div>`:''}
+      </div>`:''}
+      ${c.notas?`<div style="font-size:.76rem;color:var(--mut);background:var(--sur2);padding:10px 12px;border-radius:9px">📝 ${c.notas}</div>`:''}
     </div>`;
+
   document.getElementById('det-overlay').classList.add('open');
+}
+function switchProfileTab(id, btn){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ptab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel=document.getElementById('ptab-'+id);
+  if(panel) panel.classList.add('active');
 }
 function closeDet(){document.getElementById('det-overlay').classList.remove('open');}
 function detOvClick(e){if(e.target===document.getElementById('det-overlay'))closeDet();}
@@ -1637,11 +1795,175 @@ function detOvClick(e){if(e.target===document.getElementById('det-overlay'))clos
 // ══════════════════════════════════════
 //  MODAL CLIENTE
 // ══════════════════════════════════════
+// ═══════════════════════════════════════
+//  CLIENT SEARCH (modal)
+// ═══════════════════════════════════════
+let selectedClientId = null;
+
+function onClientSearch(q){
+  const clearBtn = document.getElementById('client-search-clear');
+  if(clearBtn) clearBtn.classList.toggle('show', q.length > 0);
+  if(!q.trim()){ closeClientDrop(); return; }
+  const ql = q.toLowerCase();
+  // Search by name, phone, cedula
+  const matches = clientes
+    .filter(c => !c.cliente_base_id) // only "base" clients (no duplicates)
+    .concat(
+      // also include ones that ARE a base (have loans linked to them)
+      clientes.filter(c => c.cliente_base_id && !clientes.find(x=>x.id===c.cliente_base_id))
+    )
+    // deduplicate by nombre
+    .reduce((acc,c)=>{ if(!acc.find(x=>x.nombre===c.nombre))acc.push(c); return acc; },[])
+    .filter(c =>
+      c.nombre.toLowerCase().includes(ql) ||
+      (c.telefono||'').includes(ql) ||
+      (c.cedula||'').toLowerCase().includes(ql)
+    )
+    .sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'))
+    .slice(0,8);
+
+  const drop = document.getElementById('client-dropdown');
+  if(!drop) return;
+  if(!matches.length && q.length < 2){ closeClientDrop(); return; }
+
+  const html = matches.map(c=>{
+    const col = colFor(c);
+    const st = getStatus(c);
+    const stColor = {activo:'var(--dan)',parcial:'var(--gld)',pagado:'var(--acc)'}[st]||'var(--mut)';
+    // Count all loans for this client
+    const loanCount = clientes.filter(x=>
+      x.id===c.id ||
+      x.cliente_base_id===c.id ||
+      (c.cliente_base_id && (x.id===c.cliente_base_id||x.cliente_base_id===c.cliente_base_id)) ||
+      (!c.cliente_base_id&&x.nombre===c.nombre)
+    ).length;
+    return `<div class="client-drop-item" onmousedown="selectExistingClient('${c.id}')">
+      <div class="client-drop-avatar" style="background:${col[0]};color:${col[1]}">${ini(c.nombre)}</div>
+      <div class="client-drop-body">
+        <div class="client-drop-name">${c.nombre}</div>
+        <div class="client-drop-meta">${c.telefono||'Sin teléfono'}${c.cedula?` · ${c.cedula}`:''} · ${loanCount} préstamo${loanCount!==1?'s':''}</div>
+      </div>
+      <span class="client-drop-badge" style="background:${stColor}20;color:${stColor}">${st}</span>
+    </div>`;
+  }).join('');
+
+  drop.innerHTML = html +
+    `<div class="client-drop-new" onmousedown="useAsNewClient('${q}')">
+      ➕ Crear nuevo cliente "<b>${q}</b>"
+    </div>`;
+  drop.classList.add('open');
+}
+
+function closeClientDrop(){
+  const drop = document.getElementById('client-dropdown');
+  if(drop) drop.classList.remove('open');
+}
+
+function clearClientSearch(){
+  const inp = document.getElementById('client-search-input');
+  const clearBtn = document.getElementById('client-search-clear');
+  if(inp) inp.value = '';
+  if(clearBtn) clearBtn.classList.remove('show');
+  closeClientDrop();
+}
+
+function resetClientSearch(){
+  selectedClientId = null;
+  clearClientSearch();
+  const banner = document.getElementById('selected-client-banner');
+  const wrap = document.getElementById('client-search-wrap');
+  if(banner) banner.classList.remove('show');
+  if(wrap) wrap.style.display = '';
+}
+
+function selectExistingClient(id){
+  const c = clientes.find(x=>x.id===id);
+  if(!c) return;
+  selectedClientId = id;
+  closeClientDrop();
+
+  // Auto-fill all personal fields from existing client
+  const map = {
+    iname:'nombre', iphone:'telefono', iced:'cedula', idir:'direccion',
+    iref:'referido_por', irfn:'ref_fam_nombre', irft:'ref_fam_telefono',
+    irtn:'ref_trab_nombre', irtt:'ref_trab_telefono', iasesor:'asesor'
+  };
+  Object.entries(map).forEach(([elId,key])=>{
+    const el = document.getElementById(elId);
+    if(el) el.value = c[key]||'';
+  });
+
+  // Set base_id: link new loan to the original client
+  const baseId = c.cliente_base_id || c.id;
+  const baseEl = document.getElementById('ibase_id');
+  if(baseEl) baseEl.value = baseId;
+
+  // Reset loan fields (new loan, fresh start)
+  ['iamt','iint','ipag','icuotas','ictspag','inotas'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('ifecha').value = new Date().toISOString().slice(0,10);
+  document.getElementById('ivenc').value = '';
+  document.getElementById('iplazo').value = 'Me';
+  document.getElementById('preview').textContent = '— ';
+
+  // Show banner, hide search
+  const col = colFor(c);
+  const banner = document.getElementById('selected-client-banner');
+  const wrap = document.getElementById('client-search-wrap');
+  const scbName = document.getElementById('scb-name');
+  const scbMeta = document.getElementById('scb-meta');
+  const scbAvatar = document.getElementById('scb-avatar');
+
+  if(scbName) scbName.textContent = c.nombre;
+  if(scbMeta){
+    const loanCount = clientes.filter(x=>
+      x.id===c.id || x.cliente_base_id===(c.cliente_base_id||c.id) ||
+      (!c.cliente_base_id&&x.nombre===c.nombre)
+    ).length;
+    scbMeta.textContent = `${c.telefono||'Sin teléfono'} · ${loanCount} préstamo${loanCount!==1?'s':''} anteriores`;
+  }
+  if(scbAvatar) scbAvatar.innerHTML = `<div style="width:32px;height:32px;border-radius:50%;background:${col[0]};color:${col[1]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem">${ini(c.nombre)}</div>`;
+  if(banner) banner.classList.add('show');
+  if(wrap) wrap.style.display = 'none';
+
+  // Focus on amount field
+  setTimeout(()=>document.getElementById('iamt')?.focus(), 50);
+  showToast(`✓ Cliente seleccionado: ${c.nombre}`);
+}
+
+function useAsNewClient(nombre){
+  closeClientDrop();
+  const inp = document.getElementById('iname');
+  const searchInp = document.getElementById('client-search-input');
+  if(inp) inp.value = nombre;
+  if(searchInp) searchInp.value = '';
+  clearClientSearch();
+  resetClientSearch();
+  setTimeout(()=>inp?.focus(), 50);
+}
+
+function clearSelectedClient(){
+  resetClientSearch();
+  // Clear all personal fields
+  ['iname','iphone','iced','idir','iref','irfn','irft','irtn','irtt','iasesor','ibase_id'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  setTimeout(()=>document.getElementById('client-search-input')?.focus(), 50);
+}
+
+// Open new loan modal pre-filled for an existing client
+function openNewLoanForClient(id){
+  openM();
+  setTimeout(()=>selectExistingClient(id), 50);
+}
+
 function openM(){
   editId=null;
   document.getElementById('modal-title').innerHTML='Nuevo <span>Préstamo</span>';
   document.getElementById('modal-save-btn').textContent='Guardar';
-  ['iname','iphone','iced','idir','iref','irfn','irft','irtn','irtt','iamt','iint','ipag','icuotas','ictspag','inotas','iasesor'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['iname','iphone','iced','idir','iref','irfn','irft','irtn','irtt','iamt','iint','ipag','icuotas','ictspag','inotas','iasesor','ibase_id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';})
+  resetClientSearch();;
   document.getElementById('ifecha').value=new Date().toISOString().slice(0,10);
   document.getElementById('ivenc').value='';document.getElementById('iplazo').value='Me';
   document.getElementById('preview').textContent='— ';
@@ -1655,7 +1977,7 @@ function openEdit(id){
   const map={iname:'nombre',iphone:'telefono',iced:'cedula',idir:'direccion',iref:'referido_por',
     irfn:'ref_fam_nombre',irft:'ref_fam_telefono',irtn:'ref_trab_nombre',irtt:'ref_trab_telefono',
     iamt:'monto',iint:'interes',ipag:'pagado',icuotas:'cuotas',ictspag:'cuotas_pagadas',
-    inotas:'notas',iasesor:'asesor',ifecha:'fecha_prestamo',ivenc:'fecha_vencimiento',iplazo:'plazo'};
+    inotas:'notas',iasesor:'asesor',ifecha:'fecha_prestamo',ivenc:'fecha_vencimiento',iplazo:'plazo',ibase_id:'cliente_base_id'};
   Object.entries(map).forEach(([elId,key])=>{const el=document.getElementById(elId);if(el)el.value=c[key]||'';});
   updP();document.getElementById('overlay').classList.add('open');
 }
@@ -1686,7 +2008,8 @@ async function saveClient(){
     plazo:document.getElementById('iplazo').value,monto,interes:pct,total,pagado,saldo,
     cuotas:parseFloat(document.getElementById('icuotas').value)||0,cuotas_pagadas:parseFloat(document.getElementById('ictspag').value)||0,
     notas:document.getElementById('inotas').value,
-    asesor:document.getElementById('iasesor')?.value||'',ci};
+    asesor:document.getElementById('iasesor')?.value||'',
+    cliente_base_id:document.getElementById('ibase_id')?.value||null,ci};
   showLoad();
   try{
     if(editId){
