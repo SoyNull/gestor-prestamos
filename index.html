@@ -574,6 +574,13 @@ select option{background:var(--sur)}
       </div>
       <div id="vencidos-list"></div>
     </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="page" id="page-estadisticas">
+    <div class="sec-hdr" style="margin-bottom:14px">
+      <div class="sec-title">📊 Estadísticas del negocio</div>
+    </div>
     <div class="cgrid">
       <div class="ccard"><div class="clabel">Distribución capital</div><div class="ctitle">Top 10 clientes por monto</div><div class="cwrap"><canvas id="cPie"></canvas></div></div>
       <div class="ccard"><div class="clabel">Tasas de interés</div><div class="ctitle">Capital por % aplicado</div><div class="cwrap"><canvas id="cInt"></canvas></div></div>
@@ -898,12 +905,13 @@ select option{background:var(--sur)}
 </nav>
 <div id="mas-drawer" style="display:none;position:fixed;bottom:calc(var(--bnav) + var(--safe));left:0;right:0;background:rgba(10,13,18,.98);border-top:1px solid var(--bor);z-index:99;padding:10px 12px 12px;backdrop-filter:blur(16px)">
   <div style="font-size:.58rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Más opciones</div>
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
     <button class="mas-btn" id="bt-caja" onclick="go('caja',null,true);closeMasDrawer()"><span style="font-size:1.3rem">💵</span><span>Caja</span></button>
     <button class="mas-btn" id="bt-gastos" onclick="go('gastos',null,true);closeMasDrawer()"><span style="font-size:1.3rem">💶</span><span>Gastos</span></button>
     <button class="mas-btn" id="bt-mensual" onclick="go('mensual',null,true);closeMasDrawer()"><span style="font-size:1.3rem">📋</span><span>Mensual</span></button>
     <button class="mas-btn" id="bt-historial" onclick="go('historial',null,true);closeMasDrawer()"><span style="font-size:1.3rem">🕐</span><span>Historial</span></button>
     <button class="mas-btn" id="bt-reportes" onclick="go('reportes',null,true);closeMasDrawer()"><span style="font-size:1.3rem">📈</span><span>Reportes</span></button>
+    <button class="mas-btn" id="bt-estadisticas" onclick="go('estadisticas',null,true);closeMasDrawer();setTimeout(renderCharts,80)" style="border-color:rgba(0,149,255,.4);background:rgba(0,149,255,.08)"><span style="font-size:1.3rem">📊</span><span style="color:var(--acc2)">Estadísticas</span></button>
   </div>
 </div>
 <button class="fab" id="app-fab" style="display:none" onclick="fabAction()">+</button>
@@ -1596,6 +1604,7 @@ function changePage(p){const total=filteredClientes.length;const tp=Math.ceil(to
 // ── CHARTS ───────────────────────────────
 function renderCharts(){
   if(!clientes.length)return;
+  if(!document.getElementById('page-estadisticas').classList.contains('active'))return;
   const leg=()=>({labels:{color:'#e8edf5',font:{family:'Syne',weight:'600',size:11},boxWidth:9,padding:10}});
   const totAmt=clientes.reduce((s,c)=>s+n(c.monto),0);
 
