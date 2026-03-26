@@ -2289,7 +2289,7 @@ function updP(){
   const total=a*(1+i/100),saldo=total-p;
   document.getElementById('preview').textContent=a?`Total: ${fmtE(total)} · Saldo: ${fmtE(saldo)} · Interés: ${fmtE(total-a)}`:'— ';
 }
-async async function saveClient(){
+async function saveClient(){
   const btn=document.getElementById('modal-save-btn');
   if(btn&&btn.disabled)return;
   if(btn){btn.disabled=true;btn.textContent='Guardando...';}
