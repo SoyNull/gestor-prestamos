@@ -2165,9 +2165,23 @@ async function guardarAbonoRapido(){
   if(!abonoRapidoId)return;
   const monto=parseFloat(document.getElementById('ar-monto-input').value)||0;
   if(monto<=0){showToast('⚠ Ingresa un monto');return;}
-  closeAbonoRapido();payId=abonoRapidoId;document.getElementById('pay-amt').value=monto;await savePay();
+  const c=clientes.find(x=>x.id===abonoRapidoId);if(!c)return;
+  closeAbonoRapido();
+  showLoad();
+  (async()=>{
+    try{
+      const newPag=parseFloat((n(c.pagado)+monto).toFixed(2));
+      const newSaldo=parseFloat((n(c.total)-newPag).toFixed(2));
+      await db.from('clientes').update({pagado:newPag,saldo:newSaldo}).eq('id',abonoRapidoId);
+      await db.from('abonos').insert([{cliente_id:abonoRapidoId,monto,fecha:new Date().toISOString().slice(0,10),notas:''}]);
+      const newDisp=parseFloat((getCapitalDisponible()+monto).toFixed(2));
+      setCapitalDisponible(newDisp);
+      showToast('✓ Abono de '+fmtE(monto)+' · Disponible: '+fmtE(newDisp));
+      await loadAll();
+    }catch(e){showToast('Error al guardar abono: '+e.message);console.error(e);}
+    hideLoad();
+  })();
 }
-
 function selectExistingClient(id){
   const c = clientes.find(x=>x.id===id);
   if(!c) return;
