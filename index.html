@@ -1638,10 +1638,10 @@ function renderClientes(){
           <div style="font-size:.74rem;color:var(--mut)">Saldo: <span style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'};font-weight:800;font-size:.82rem">${fmtE(Math.max(0,n(c.saldo)))}</span></div>
           <div class="mdate">${fmtDate(c.fecha_prestamo)} → <span style="color:${vencido?'var(--dan)':urgente?'var(--gld)':'inherit'}">${fmtDate(c.fecha_vencimiento)}</span>${urgente?` ⚠${dias}d`:vencido?' 🚨':''}</div>
           <div class="pbar" style="margin-top:5px"><div class="pfill" style="width:${prog}%"></div></div>
-          <div class="mactions">
-            <button class="mbtn-pay" onclick="openPay('${c.id}')">💰 Abonar</button>
-            <button class="mbtn-view" onclick="openDet('${c.id}')">Ver perfil</button>
-            <button onclick="confirmDel('${c.id}')" style="padding:8px 10px;border-radius:9px;border:1px solid rgba(255,68,102,.35);background:rgba(255,68,102,.1);color:var(--dan);font-size:.85rem;cursor:pointer;flex-shrink:0" title="Eliminar">🗑</button>
+          <div class="mactions" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <button class="mbtn-pay" onclick="openPay('${c.id}')" style="grid-column:1/-1">💰 Abonar</button>
+            <button class="mbtn-view" onclick="openDet('${c.id}')">👤 Ver perfil</button>
+            <button onclick="confirmDel('${c.id}')" style="padding:8px 6px;border-radius:9px;border:1px solid rgba(255,68,102,.4);background:rgba(255,68,102,.12);color:var(--dan);font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer">🗑 Eliminar</button>
           </div>
         </div></div>`;
     }).join('');
