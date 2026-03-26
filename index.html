@@ -1202,7 +1202,7 @@ let cPie,cInt,cBar,cMenPie,cGastos,cCaja;
 let editId=null,payId=null;
 let filteredClientes=[];
 let currentPage=1;
-let sortField='nombre',sortDir=1;
+let sortField='fecha_prestamo',sortDir=-1;
 
 // ═══════════════════════════════════════
 //  LOGIN
@@ -1577,7 +1577,7 @@ function renderClientes(){
       return`<tr style="${vencido?'background:rgba(255,68,102,.05)':urgente?'background:rgba(245,200,66,.03)':''}">
         <td><div class="cname-cell" style="min-width:160px">
           <div class="cavatar" style="background:${col[0]};color:${col[1]}">${ini(c.nombre)}</div>
-          <div><div class="cname">${c.nombre}</div>
+          <div><div class="cname">${c.nombre}${c.cliente_base_id?' <span style="font-size:.6rem;background:rgba(0,149,255,.15);color:var(--acc2);border-radius:4px;padding:1px 5px;font-weight:700;vertical-align:middle">2° préstamo</span>':''}</div>
           <div style="font-size:.62rem;color:var(--mut)">${c.telefono||'—'}</div></div></div></td>
         <td style="color:var(--mut);font-size:.74rem;white-space:nowrap">${fmtDate(c.fecha_prestamo)}</td>
         <td style="white-space:nowrap;font-size:.74rem;color:${vencido?'var(--dan)':urgente?'var(--gld)':'var(--mut)'}">
@@ -1633,7 +1633,7 @@ function renderClientes(){
       return`<div class="mcard" style="${vencido?'border-color:rgba(255,68,102,.5)':urgente?'border-color:rgba(245,200,66,.4)':''}">
         <div class="mavatar" style="background:${col[0]};color:${col[1]}">${ini(c.nombre)}</div>
         <div class="mbody">
-          <div class="mname" onclick="openDet('${c.id}')" style="cursor:pointer">${c.nombre}</div>
+          <div class="mname" onclick="openDet('${c.id}')" style="cursor:pointer">${c.nombre}${c.cliente_base_id?' <span style="font-size:.6rem;background:rgba(0,149,255,.15);color:var(--acc2);border-radius:4px;padding:1px 5px;font-weight:700">2°</span>':''}</div>
           <div class="mrow"><span class="mamount">${fmtE(c.monto)}</span><span class="minterest">${n(c.interes)}%</span>${badge(st)}</div>
           <div style="font-size:.74rem;color:var(--mut)">Saldo: <span style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'};font-weight:800;font-size:.82rem">${fmtE(Math.max(0,n(c.saldo)))}</span></div>
           <div class="mdate">${fmtDate(c.fecha_prestamo)} → <span style="color:${vencido?'var(--dan)':urgente?'var(--gld)':'inherit'}">${fmtDate(c.fecha_vencimiento)}</span>${urgente?` ⚠${dias}d`:vencido?' 🚨':''}</div>
