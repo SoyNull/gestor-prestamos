@@ -92,6 +92,8 @@ body::before{content:"";position:fixed;width:600px;height:600px;background:radia
 .ar-monto-input:focus{border-color:var(--acc)}
 .ar-save-btn{width:100%;padding:14px;background:var(--acc);border:none;border-radius:12px;color:#000;font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer}
 .ar-save-btn:active{background:#00c886}
+.btn-venc-quick{padding:9px 4px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--mut);font-family:"Syne",sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s;text-align:center}
+.btn-venc-quick.sel{background:var(--acc);border-color:var(--acc);color:#000}
 .dup-warning{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.3);border-radius:11px;padding:11px 13px;margin-bottom:10px;display:none}
 .dup-warning.show{display:block}
 .dup-warning-title{font-size:.75rem;font-weight:800;color:var(--gld);margin-bottom:8px}
@@ -953,87 +955,91 @@ select option{background:var(--sur)}
  <div class="modal">
   <div class="handle"></div>
   <div class="mtitle" id="modal-title">Nuevo <span>Préstamo</span></div>
-
-  <!-- BUSCAR CLIENTE EXISTENTE -->
   <div class="selected-client-banner" id="selected-client-banner">
     <div id="scb-avatar" style="font-size:1.4rem">👤</div>
-    <div class="scb-info">
-      <div class="scb-name" id="scb-name">—</div>
-      <div class="scb-meta" id="scb-meta">Datos del cliente cargados</div>
-    </div>
+    <div class="scb-info"><div class="scb-name" id="scb-name">—</div><div class="scb-meta" id="scb-meta">Datos del cliente cargados</div></div>
     <button class="scb-clear" onclick="clearSelectedClient()">✕ Cambiar</button>
   </div>
   <div class="client-search-wrap" id="client-search-wrap">
     <span class="client-search-icon">🔍</span>
-    <input type="text" class="client-search-input" id="client-search-input"
-      placeholder="Buscar cliente existente o escribir nombre nuevo..."
-      oninput="onClientSearch(this.value)"
-      onblur="setTimeout(()=>closeClientDrop(),180)"
-      autocomplete="off"/>
+    <input type="text" class="client-search-input" id="client-search-input" placeholder="Buscar cliente o escribir nombre nuevo..." oninput="onClientSearch(this.value)" onblur="setTimeout(()=>closeClientDrop(),180)" autocomplete="off"/>
     <button class="client-search-clear" id="client-search-clear" onclick="clearClientSearch()">✕</button>
     <div class="client-dropdown" id="client-dropdown"></div>
   </div>
-
-  <div class="section-sep">📋 Datos del cliente</div>
-  <div class="fg"><label>Nombre completo *</label><input type="text" id="iname" placeholder="Ej: Juan García Pérez" autocomplete="off" oninput="checkDuplicateName(this.value)"/></div>
+  <div class="fg"><label>Nombre del cliente *</label><input type="text" id="iname" placeholder="Ej: Juan García" autocomplete="off" oninput="checkDuplicateName(this.value)"/></div>
   <div class="dup-warning" id="dup-warning">
     <div class="dup-warning-title">⚠ Cliente similar encontrado</div>
     <div class="dup-warning-card" id="dup-warning-card">
       <div class="mavatar" id="dup-warning-avatar" style="width:34px;height:34px;font-size:.72rem;flex-shrink:0"></div>
-      <div>
-        <div class="dup-warning-name" id="dup-warning-name">—</div>
-        <div class="dup-warning-detail" id="dup-warning-detail">—</div>
-      </div>
+      <div><div class="dup-warning-name" id="dup-warning-name">—</div><div class="dup-warning-detail" id="dup-warning-detail">—</div></div>
     </div>
-    <div class="dup-warning-hint">¿Quieres agregar un nuevo préstamo a este cliente o es una persona diferente?</div>
+    <div class="dup-warning-hint">¿Nuevo préstamo a este cliente o es persona diferente?</div>
     <div class="dup-warning-btns">
       <button class="dup-btn-new" onclick="ignoreDuplicate()">Es persona distinta</button>
       <button class="dup-btn-use" id="dup-btn-use" onclick="">+ Préstamo a este cliente</button>
     </div>
   </div>
+  <div class="fg"><label>Teléfono</label><input type="tel" id="iphone" placeholder="+34 600 000 000" inputmode="tel"/></div>
   <div class="frow">
-    <div class="fg"><label>Teléfono</label><input type="tel" id="iphone" placeholder="+34 600 000 000"/></div>
-    <div class="fg"><label>Cédula / DNI</label><input type="text" id="iced" placeholder="Opcional"/></div>
-  </div>
-  <div class="fg"><label>Dirección</label><input type="text" id="idir" placeholder="Calle, número, ciudad"/></div>
-  <div class="fg"><label>Referido por</label><input type="text" id="iref" placeholder="Quién lo recomendó"/></div>
-  <div class="section-sep">👨‍👩‍👧 Referencias</div>
-  <div class="frow">
-    <div class="fg"><label>Ref. familiar — Nombre</label><input type="text" id="irfn"/></div>
-    <div class="fg"><label>Ref. familiar — Tel.</label><input type="tel" id="irft"/></div>
-  </div>
-  <div class="frow">
-    <div class="fg"><label>Ref. trabajo — Nombre</label><input type="text" id="irtn"/></div>
-    <div class="fg"><label>Ref. trabajo — Tel.</label><input type="tel" id="irtt"/></div>
-  </div>
-  <div class="section-sep">💶 Datos del préstamo</div>
-  <div class="frow">
-    <div class="fg"><label>Fecha préstamo</label><input type="date" id="ifecha"/></div>
-    <div class="fg"><label>Fecha vencimiento</label><input type="date" id="ivenc"/></div>
-  </div>
-  <div class="frow">
-    <div class="fg"><label>Plazo</label>
-      <select id="iplazo"><option value="Me">Mensual (Me)</option><option value="Se">Semanal (Se)</option><option value="Di">Diario (Di)</option><option value="Qu">Quincenal (Qu)</option></select>
+    <div class="fg"><label>Monto a prestar (€) *</label><input type="number" id="iamt" placeholder="0" min="0" inputmode="decimal" oninput="updP()" style="font-size:1.1rem;font-weight:700"/></div>
+    <div class="fg"><label>Interés (%)</label>
+      <select id="iint_sel" onchange="const iv=document.getElementById('iint');if(this.value==='_otro'){iv.style.display='';iv.value='';iv.focus();}else{iv.style.display='none';iv.value=this.value;updP();}" style="font-size:1rem">
+        <option value="20">20% (normal)</option>
+        <option value="15">15%</option>
+        <option value="12">12%</option>
+        <option value="10">10%</option>
+        <option value="6">6%</option>
+        <option value="0">0% (sin interés)</option>
+        <option value="_otro">Otro %...</option>
+      </select>
+      <input type="number" id="iint" placeholder="%" min="0" max="100" step="0.5" inputmode="decimal" oninput="updP()" style="display:none;margin-top:5px"/>
     </div>
-    <div class="fg"><label>Interés (%)</label><input type="number" id="iint" placeholder="Ej: 20" min="0" max="100" step="0.5" inputmode="decimal" oninput="updP()"/></div>
   </div>
-  <div class="frow">
-    <div class="fg"><label>Monto prestado (€)</label><input type="number" id="iamt" placeholder="0" min="0" inputmode="decimal" oninput="updP()"/></div>
-    <div class="fg"><label>Ya pagado (€)</label><input type="number" id="ipag" placeholder="0" min="0" inputmode="decimal" oninput="updP()"/></div>
+  <div class="fg"><label>¿Cuándo debe pagar?</label>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px">
+      <button type="button" class="btn-venc-quick" onclick="setVencQuick(30,this)">1 mes</button>
+      <button type="button" class="btn-venc-quick" onclick="setVencQuick(15,this)">15 días</button>
+      <button type="button" class="btn-venc-quick" onclick="setVencQuick(7,this)">1 semana</button>
+      <button type="button" class="btn-venc-quick" onclick="setVencQuick(0,this)">Otra fecha</button>
+    </div>
+    <input type="date" id="ivenc" style="margin-top:7px" oninput="updP()"/>
   </div>
-  <div class="frow">
-    <div class="fg"><label>Cuotas totales</label><input type="number" id="icuotas" placeholder="1" min="0" step="0.01" inputmode="decimal"/></div>
-    <div class="fg"><label>Cuotas pagadas</label><input type="number" id="ictspag" placeholder="0" min="0" step="0.01" inputmode="decimal"/></div>
+  <div class="fg"><label>Notas (opcional)</label><textarea id="inotas" placeholder="Observaciones..." style="min-height:44px"></textarea></div>
+  <div class="fg"><div class="preview-box" id="preview" style="font-size:.95rem">— </div></div>
+  <button type="button" onclick="toggleDatosAdicionales()" id="btn-adicionales" style="width:100%;padding:10px;background:var(--sur2);border:1px solid var(--bor);border-radius:10px;color:var(--mut);font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;margin-bottom:10px;text-align:left">▸ Datos adicionales (dirección, referencias, cuotas...)</button>
+  <div id="datos-adicionales" style="display:none">
+    <div class="frow">
+      <div class="fg"><label>Cédula / DNI</label><input type="text" id="iced" placeholder="Opcional"/></div>
+      <div class="fg"><label>Referido por</label><input type="text" id="iref" placeholder="Quién lo recomendó"/></div>
+    </div>
+    <div class="fg"><label>Dirección</label><input type="text" id="idir" placeholder="Calle, número, ciudad"/></div>
+    <div style="font-size:.6rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--bor)">Referencias</div>
+    <div class="frow">
+      <div class="fg"><label>Ref. familiar — Nombre</label><input type="text" id="irfn"/></div>
+      <div class="fg"><label>Ref. familiar — Tel.</label><input type="tel" id="irft"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Ref. trabajo — Nombre</label><input type="text" id="irtn"/></div>
+      <div class="fg"><label>Ref. trabajo — Tel.</label><input type="tel" id="irtt"/></div>
+    </div>
+    <div style="font-size:.6rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1.5px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--bor)">Opciones del préstamo</div>
+    <div class="frow">
+      <div class="fg"><label>Fecha préstamo</label><input type="date" id="ifecha"/></div>
+      <div class="fg"><label>Plazo</label><select id="iplazo"><option value="Me">Mensual (Me)</option><option value="Se">Semanal (Se)</option><option value="Di">Diario (Di)</option><option value="Qu">Quincenal (Qu)</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Ya pagado (€)</label><input type="number" id="ipag" placeholder="0" min="0" inputmode="decimal" oninput="updP()"/></div>
+      <div class="fg"><label>Asesor / Gestor</label><input type="text" id="iasesor" placeholder="Ej: Andrés"/></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Cuotas totales</label><input type="number" id="icuotas" placeholder="1" min="0" step="0.01" inputmode="decimal"/></div>
+      <div class="fg"><label>Cuotas pagadas</label><input type="number" id="ictspag" placeholder="0" min="0" step="0.01" inputmode="decimal"/></div>
+    </div>
   </div>
-  <div class="frow">
-    <div class="fg"><label>Asesor / Gestor</label><input type="text" id="iasesor" placeholder="Ej: Andrés"/></div>
-    <div class="fg"><label>Notas</label><textarea id="inotas" placeholder="Observaciones..." style="min-height:44px"></textarea></div>
-  </div>
-  <div class="fg"><label>Resumen</label><div class="preview-box" id="preview">— </div></div>
   <input type="hidden" id="ibase_id" value="">
   <div class="mfooter">
     <button class="btn btn-g" onclick="closeM()">Cancelar</button>
-    <button class="btn btn-p" id="modal-save-btn" onclick="saveClient()">Guardar</button>
+    <button class="btn btn-p" id="modal-save-btn" onclick="saveClient()" style="font-size:1rem;padding:14px">Guardar préstamo</button>
   </div>
  </div>
 </div>
@@ -2127,6 +2133,22 @@ function openAbonoRapido(){
   setTimeout(()=>document.getElementById('ar-search-input')?.focus(),120);
 }
 function closeAbonoRapido(){ document.getElementById('abono-rapido-overlay').classList.remove('open'); }
+
+function setVencQuick(dias,btn){
+  document.querySelectorAll('.btn-venc-quick').forEach(b=>b.classList.remove('sel'));
+  if(btn)btn.classList.add('sel');
+  if(dias===0){document.getElementById('ivenc').value='';document.getElementById('ivenc').focus();return;}
+  const d=new Date();d.setDate(d.getDate()+dias);
+  document.getElementById('ivenc').value=d.toISOString().slice(0,10);
+  updP();
+}
+function toggleDatosAdicionales(){
+  const da=document.getElementById('datos-adicionales');
+  const ba=document.getElementById('btn-adicionales');
+  const open=da.style.display!=='none';
+  da.style.display=open?'none':'block';
+  ba.textContent=open?'▸ Datos adicionales (dirección, referencias, cuotas...)':'▾ Datos adicionales (dirección, referencias, cuotas...)';
+}
 function filtrarAbonoRapido(q){
   const res=document.getElementById('ar-results');if(!res)return;
   const conf=document.getElementById('ar-confirm');if(conf)conf.classList.remove('show');
@@ -2242,6 +2264,11 @@ function openM(){
   editId=null;
   dupIgnored=false;
   hideDupWarning();
+  // Reset simplified modal
+  const da=document.getElementById('datos-adicionales');if(da)da.style.display='none';
+  const ba=document.getElementById('btn-adicionales');if(ba)ba.textContent='▸ Datos adicionales (dirección, referencias, cuotas...)';
+  const isel=document.getElementById('iint_sel');if(isel){isel.value='20';const iv=document.getElementById('iint');if(iv){iv.value='20';iv.style.display='none';}}
+  document.querySelectorAll('.btn-venc-quick').forEach(b=>b.classList.remove('sel'));
   document.getElementById('modal-title').innerHTML='Nuevo <span>Préstamo</span>';
   document.getElementById('modal-save-btn').textContent='Guardar';
   ['iname','iphone','iced','idir','iref','irfn','irft','irtn','irtt','iamt','iint','ipag','icuotas','ictspag','inotas','iasesor','ibase_id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';})
