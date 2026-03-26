@@ -1876,9 +1876,10 @@ function openDet(id){
         <div class="loan-card-stat"><div class="loan-card-stat-label">Saldo</div><div class="loan-card-stat-val" style="color:${lc}">${fmtE(Math.max(0,n(l.saldo)))}</div></div>
       </div>
       <div style="height:3px;background:var(--bor);border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:${lp}%;background:${lc};border-radius:2px;transition:width .4s"></div></div>
-      <div style="display:flex;gap:6px;margin-top:8px">
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
         <button class="btn btn-pay" onclick="closeDet();openPay('${l.id}')" style="font-size:.68rem;padding:4px 10px">€+ Abono</button>
         <button class="btn btn-p btn-sm" onclick="closeDet();openEdit('${l.id}')" style="font-size:.68rem;padding:4px 10px">✏ Editar</button>
+        <button class="btn btn-sm" onclick="closeDet();confirmDel('${l.id}')" style="font-size:.68rem;padding:4px 10px;background:rgba(255,68,102,.12);border:1px solid rgba(255,68,102,.35);color:var(--dan)">🗑 Eliminar</button>
       </div>
     </div>`;
   }).join('');
