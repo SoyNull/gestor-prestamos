@@ -625,89 +625,44 @@ select option{background:var(--sur)}
   <!-- CLIENTES -->
   <div class="page" id="page-clientes">
     <div class="sec-hdr">
-      <div class="sec-title">Clientes <span id="count-badge" style="font-size:.69rem;color:var(--mut);font-weight:400"></span></div>
-      <button class="btn btn-p" onclick="openM()">+ Nuevo préstamo</button>
+      <div class="sec-title">Mis clientes <span id="count-badge" style="font-size:.69rem;color:var(--mut);font-weight:400"></span></div>
+      <button class="btn btn-p" onclick="openM()">+ Nuevo</button>
     </div>
-    <!-- Summary bar (estilo Carteras Manager - fija siempre visible) -->
-    <div class="summary-bar" id="summary-bar">
-      <div class="summary-item">
-        <div class="summary-item-label">Prestado</div>
-        <div class="summary-item-val" id="sb-prestado" style="color:var(--acc)">€0</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-item-label">Total c/Interés</div>
-        <div class="summary-item-val" id="sb-total" style="color:var(--gld)">€0</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-item-label">Pagado</div>
-        <div class="summary-item-val" id="sb-pagado" style="color:var(--acc2)">€0</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-item-label">Saldo</div>
-        <div class="summary-item-val" id="sb-saldo" style="color:var(--dan)">€0</div>
-      </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+      <input type="text" id="search-inp" placeholder="🔍 Buscar cliente..." oninput="applyFilters()"
+        style="flex:1;padding:12px 14px;background:var(--sur);border:1.5px solid var(--bor);border-radius:12px;color:var(--txt);font-family:'Syne',sans-serif;font-size:.95rem;outline:none;-webkit-appearance:none">
+      <button onclick="toggleFiltros()" id="btn-filtros" style="padding:12px 14px;border-radius:12px;border:1px solid var(--bor);background:var(--sur2);color:var(--mut);font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;flex-shrink:0">⚙ Filtros</button>
     </div>
-    <!-- Filters bar (Carteras Manager style) -->
-    <div class="filters-bar">
-      <div class="fi fi-search">
-        <label>Buscar cliente</label>
-        <input type="text" id="search-inp" placeholder="Nombre..." oninput="applyFilters()">
+    <div id="filtros-panel" style="display:none;background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <div><div style="font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:4px">Estado</div>
+          <select id="filter-st" onchange="applyFilters()" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--bor);border-radius:8px;color:var(--txt);font-family:'Syne',sans-serif;font-size:.82rem">
+            <option value="">Todos</option><option value="activo">Activo</option><option value="parcial">Parcial</option><option value="pagado">Pagado</option>
+          </select></div>
+        <div><div style="font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:4px">Interés</div>
+          <select id="filter-pct" onchange="applyFilters()" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--bor);border-radius:8px;color:var(--txt);font-family:'Syne',sans-serif;font-size:.82rem">
+            <option value="">Todos %</option><option value="0">0%</option><option value="6">6%</option><option value="10">10%</option><option value="12">12%</option><option value="15">15%</option><option value="20">20%</option>
+          </select></div>
+        <div><div style="font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:4px">Desde</div>
+          <input type="date" id="filter-desde" onchange="applyFilters()" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--bor);border-radius:8px;color:var(--txt);font-family:'Syne',sans-serif;font-size:.82rem"></div>
+        <div><div style="font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;margin-bottom:4px">Hasta</div>
+          <input type="date" id="filter-hasta" onchange="applyFilters()" style="width:100%;padding:8px;background:var(--bg);border:1px solid var(--bor);border-radius:8px;color:var(--txt);font-family:'Syne',sans-serif;font-size:.82rem"></div>
       </div>
-      <div class="fi">
-        <label>Estado</label>
-        <select id="filter-st" onchange="applyFilters()">
-          <option value="">Todos</option>
-          <option value="activo">Activo</option>
-          <option value="parcial">Parcial</option>
-          <option value="pagado">Pagado</option>
-        </select>
-      </div>
-      <div class="fi">
-        <label>Interés</label>
-        <select id="filter-pct" onchange="applyFilters()">
-          <option value="">Todos %</option>
-          <option value="0">0%</option><option value="6">6%</option>
-          <option value="10">10%</option><option value="12">12%</option>
-          <option value="15">15%</option><option value="20">20%</option>
-        </select>
-      </div>
-      <div class="fi">
-        <label>Desde</label>
-        <input type="date" id="filter-desde" onchange="applyFilters()">
-      </div>
-      <div class="fi">
-        <label>Hasta</label>
-        <input type="date" id="filter-hasta" onchange="applyFilters()">
-      </div>
-      <button class="filter-clear" onclick="clearFilters()">✕ Limpiar</button>
+      <button onclick="clearFilters()" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--bor);background:var(--sur2);color:var(--mut);font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer">✕ Limpiar filtros</button>
     </div>
-    <!-- Desktop table -->
-    <div class="twrap">
-      <table>
-        <thead><tr>
-          <th onclick="sortBy('nombre')">Cliente</th>
-          <th onclick="sortBy('fecha_prestamo')">Fecha</th>
-          <th onclick="sortBy('fecha_vencimiento')">Vencimiento</th>
-          <th>Plazo</th>
-          <th onclick="sortBy('monto')" style="text-align:right">Prestado</th>
-          <th onclick="sortBy('interes')" style="text-align:right">Interés</th>
-          <th onclick="sortBy('total')" style="text-align:right">Total</th>
-          <th onclick="sortBy('pagado')" style="text-align:right">Pagado</th>
-          <th onclick="sortBy('saldo')" style="text-align:right">Saldo</th>
-          <th style="text-align:center">Cuotas</th>
-          <th style="text-align:center">Cts.Pag</th>
-          <th style="text-align:center">Cts.Pend</th>
-          <th onclick="sortBy('asesor')">Asesor</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr></thead>
-        <tbody id="dtbody"></tbody>
-      </table>
+    <div id="summary-bar" style="display:none"><div id="sb-prestado"></div><div id="sb-total"></div><div id="sb-pagado"></div><div id="sb-saldo"></div></div>
+    <div class="twrap"><table><thead><tr>
+      <th onclick="sortBy('nombre')">Cliente</th><th onclick="sortBy('fecha_prestamo')">Fecha</th>
+      <th onclick="sortBy('fecha_vencimiento')">Vencimiento</th><th>Plazo</th>
+      <th onclick="sortBy('monto')" style="text-align:right">Prestado</th><th onclick="sortBy('interes')" style="text-align:right">Interés</th>
+      <th onclick="sortBy('total')" style="text-align:right">Total</th><th onclick="sortBy('pagado')" style="text-align:right">Pagado</th>
+      <th onclick="sortBy('saldo')" style="text-align:right">Saldo</th><th style="text-align:center">Cuotas</th>
+      <th style="text-align:center">Cts.Pag</th><th style="text-align:center">Cts.Pend</th>
+      <th onclick="sortBy('asesor')">Asesor</th><th>Estado</th><th>Acciones</th>
+    </tr></thead><tbody id="dtbody"></tbody></table>
       <div id="empty-d" class="empty" style="display:none"><div class="ei">💸</div><p>Sin resultados.</p></div>
-    </div><!-- end twrap -->
-    <!-- Pagination - shown on both desktop AND mobile -->
+    </div>
     <div class="pagination" id="pagination"></div>
-    <!-- Mobile cards -->
     <div class="mcards" id="mcards"></div>
     <div id="empty-m" class="empty" style="display:none"><div class="ei">💸</div><p>Pulsa + para añadir.</p></div>
   </div>
@@ -1413,6 +1368,23 @@ function applyFilters(){
     if(typeof va==='string')return va.localeCompare(vb,'es')*sortDir;
     return(n(va)-n(vb))*sortDir;
   });
+  // Agrupar clientes con múltiples préstamos en 1 sola tarjeta
+  const __seen=new Set();const __grouped=[];
+  filteredClientes.forEach(c=>{
+    const rootId=c.cliente_base_id||c.id;
+    if(!__seen.has(rootId)){
+      __seen.add(rootId);
+      const allLoans=filteredClientes.filter(x=>(x.cliente_base_id||x.id)===rootId);
+      const root=allLoans.find(x=>!x.cliente_base_id)||allLoans[0];
+      root.__loanCount=allLoans.length;
+      root.__totalSaldo=allLoans.reduce((s,x)=>s+Math.max(0,n(x.saldo)),0);
+      root.__totalMonto=allLoans.reduce((s,x)=>s+n(x.monto),0);
+      root.__hasVencido=allLoans.some(x=>daysUntil(x.fecha_vencimiento)<0&&getStatus(x)!=='pagado'&&x.fecha_vencimiento);
+      root.__hasUrgente=allLoans.some(x=>{const d=daysUntil(x.fecha_vencimiento);return d>=0&&d<=7&&getStatus(x)!=='pagado';});
+      __grouped.push(root);
+    }
+  });
+  filteredClientes=__grouped;
   currentPage=1;
   renderClientes();
 }
@@ -1607,18 +1579,7 @@ function renderClientes(){
   // Pagination
   const pEl=document.getElementById('pagination');
   if(total>PAGE_SIZE&&pEl){
-    const pages=[];
-    for(let i=1;i<=totalPages;i++){
-      if(i===1||i===totalPages||Math.abs(i-currentPage)<=1)pages.push(i);
-      else if(pages[pages.length-1]!=='...')pages.push('...');
-    }
-    pEl.innerHTML=`
-      <div class="page-info">Mostrando ${start+1}–${Math.min(start+PAGE_SIZE,total)} de ${total} clientes</div>
-      <div class="page-btns">
-        <button class="pbtn" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>
-        ${pages.map(p=>p==='...'?`<button class="pbtn" disabled>…</button>`:`<button class="pbtn ${p===currentPage?'active':''}" onclick="changePage(${p})">${p}</button>`).join('')}
-        <button class="pbtn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>
-      </div>`;
+    pEl.innerHTML=`<button class="pbtn" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''} style="padding:10px 18px;font-size:.85rem;font-weight:700;border-radius:10px">← Anterior</button><span style="font-size:.8rem;color:var(--mut);font-weight:700">Página ${currentPage} de ${totalPages}</span><button class="pbtn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''} style="padding:10px 18px;font-size:.85rem;font-weight:700;border-radius:10px">Siguiente →</button>`;
   } else if(pEl) pEl.innerHTML='';
 
   // Mobile cards
@@ -1630,18 +1591,24 @@ function renderClientes(){
       const col=colFor(c);const st=getStatus(c);
       const prog=n(c.total)>0?Math.min(100,(n(c.pagado)/n(c.total)*100)).toFixed(0):0;
       const dias=daysUntil(c.fecha_vencimiento);const urgente=dias<=7&&dias>=0&&st!=='pagado';const vencido=dias<0&&st!=='pagado'&&c.fecha_vencimiento;
-      return`<div class="mcard" style="${vencido?'border-color:rgba(255,68,102,.5)':urgente?'border-color:rgba(245,200,66,.4)':''}">
-        <div class="mavatar" style="background:${col[0]};color:${col[1]}">${ini(c.nombre)}</div>
-        <div class="mbody">
-          <div class="mname" onclick="openDet('${c.id}')" style="cursor:pointer">${c.nombre}${c.cliente_base_id?' <span style="font-size:.6rem;background:rgba(0,149,255,.15);color:var(--acc2);border-radius:4px;padding:1px 5px;font-weight:700">2°</span>':''}</div>
-          <div class="mrow"><span class="mamount">${fmtE(c.monto)}</span><span class="minterest">${n(c.interes)}%</span>${badge(st)}</div>
-          <div style="font-size:.74rem;color:var(--mut)">Saldo: <span style="color:${n(c.saldo)<=0?'var(--acc)':'var(--dan)'};font-weight:800;font-size:.82rem">${fmtE(Math.max(0,n(c.saldo)))}</span></div>
-          <div class="mdate">${fmtDate(c.fecha_prestamo)} → <span style="color:${vencido?'var(--dan)':urgente?'var(--gld)':'inherit'}">${fmtDate(c.fecha_vencimiento)}</span>${urgente?` ⚠${dias}d`:vencido?' 🚨':''}</div>
-          <div class="pbar" style="margin-top:5px"><div class="pfill" style="width:${prog}%"></div></div>
-          <div class="mactions" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
-            <button class="mbtn-pay" onclick="openPay('${c.id}')" style="grid-column:1/-1">💰 Abonar</button>
-            <button class="mbtn-view" onclick="openDet('${c.id}')">👤 Ver perfil</button>
-            <button onclick="confirmDel('${c.id}')" style="padding:8px 6px;border-radius:9px;border:1px solid rgba(255,68,102,.4);background:rgba(255,68,102,.12);color:var(--dan);font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer">🗑 Eliminar</button>
+      return`<div class="mcard" style="border-radius:14px;padding:14px;margin-bottom:10px;background:var(--sur);border:1.5px solid ${(c.__hasVencido||vencido)?'rgba(255,68,102,.5)':(c.__hasUrgente||urgente)?'rgba(245,200,66,.4)':'var(--bor)'};display:flex;gap:12px;align-items:flex-start">
+        <div onclick="openDet('${c.id}')" style="width:44px;height:44px;border-radius:50%;background:${col[0]};color:${col[1]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;cursor:pointer">${ini(c.nombre)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div>
+              <div onclick="openDet('${c.id}')" style="font-size:1rem;font-weight:800;color:var(--txt);cursor:pointer;line-height:1.2">${c.nombre.split('(')[0].trim()}</div>
+              <div style="margin-top:3px;display:flex;gap:5px;flex-wrap:wrap">${badge(st)}${c.__loanCount>1?`<span style="font-size:.62rem;background:rgba(245,200,66,.15);color:var(--gld);border-radius:4px;padding:1px 6px;font-weight:700">${c.__loanCount} préstamos</span>`:''}${c.telefono?`<a href="tel:${c.telefono}" style="font-size:.62rem;color:var(--acc2);text-decoration:none">📞</a>`:''}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:8px">
+              <div style="font-size:.6rem;color:var(--mut);margin-bottom:1px">Por abonar</div>
+              <div style="font-size:1.3rem;font-weight:800;color:${(c.__loanCount>1?c.__totalSaldo:Math.max(0,n(c.saldo)))<=0?'var(--acc)':'var(--dan)'};font-family:'DM Mono',monospace;line-height:1">${fmtE(c.__loanCount>1?c.__totalSaldo:Math.max(0,n(c.saldo)))}</div>
+            </div>
+          </div>
+          <div style="height:4px;background:var(--bor);border-radius:3px;margin-bottom:10px;overflow:hidden"><div style="height:100%;width:${prog}%;background:${n(c.saldo)<=0?'var(--acc)':vencido?'var(--dan)':'var(--acc2)'};border-radius:3px"></div></div>
+          <div style="display:flex;gap:6px">
+            <button onclick="openPay('${c.id}')" style="flex:1;padding:10px 6px;border-radius:10px;border:none;background:var(--acc);color:#000;font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer">💰 Abonar</button>
+            <button onclick="openDet('${c.id}')" style="padding:10px 12px;border-radius:10px;border:1px solid var(--bor);background:var(--sur2);color:var(--txt);font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">👤</button>
+            <button onclick="confirmDel('${c.id}')" style="padding:10px 12px;border-radius:10px;border:1px solid rgba(255,68,102,.4);background:rgba(255,68,102,.1);color:var(--dan);font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer">🗑</button>
           </div>
         </div></div>`;
     }).join('');
@@ -2133,6 +2100,13 @@ function setVencQuick(dias,btn){
   const d=new Date();d.setDate(d.getDate()+dias);
   document.getElementById('ivenc').value=d.toISOString().slice(0,10);
   updP();
+}
+function toggleFiltros(){
+  const p=document.getElementById('filtros-panel');
+  const b=document.getElementById('btn-filtros');
+  const open=p&&p.style.display!=='none';
+  if(p)p.style.display=open?'none':'block';
+  if(b){b.style.borderColor=open?'var(--bor)':'var(--acc2)';b.style.color=open?'var(--mut)':'var(--acc2)';}
 }
 function toggleDatosAdicionales(){
   const da=document.getElementById('datos-adicionales');
