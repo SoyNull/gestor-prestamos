@@ -961,8 +961,7 @@ select option{background:var(--sur)}
     <button class="scb-clear" onclick="clearSelectedClient()">✕ Cambiar</button>
   </div>
   <div class="client-search-wrap" id="client-search-wrap">
-    <span class="client-search-icon">🔍</span>
-    <input type="text" class="client-search-input" id="client-search-input" placeholder="Buscar cliente o escribir nombre nuevo..." oninput="onClientSearch(this.value)" onblur="setTimeout(()=>closeClientDrop(),180)" autocomplete="off"/>
+    <input type="text" class="client-search-input" id="client-search-input" placeholder="🔍 Buscar cliente o escribir nombre nuevo..." oninput="onClientSearch(this.value)" onblur="setTimeout(()=>closeClientDrop(),180)" autocomplete="off" style="padding-left:14px"/>
     <button class="client-search-clear" id="client-search-clear" onclick="clearClientSearch()">✕</button>
     <div class="client-dropdown" id="client-dropdown"></div>
   </div>
@@ -983,16 +982,7 @@ select option{background:var(--sur)}
   <div class="frow">
     <div class="fg"><label>Monto a prestar (€) *</label><input type="number" id="iamt" placeholder="0" min="0" inputmode="decimal" oninput="updP()" style="font-size:1.1rem;font-weight:700"/></div>
     <div class="fg"><label>Interés (%)</label>
-      <select id="iint_sel" onchange="const iv=document.getElementById('iint');if(this.value==='_otro'){iv.style.display='';iv.value='';iv.focus();}else{iv.style.display='none';iv.value=this.value;updP();}" style="font-size:1rem">
-        <option value="20">20% (normal)</option>
-        <option value="15">15%</option>
-        <option value="12">12%</option>
-        <option value="10">10%</option>
-        <option value="6">6%</option>
-        <option value="0">0% (sin interés)</option>
-        <option value="_otro">Otro %...</option>
-      </select>
-      <input type="number" id="iint" placeholder="%" min="0" max="100" step="0.5" inputmode="decimal" oninput="updP()" style="display:none;margin-top:5px"/>
+      <input type="number" id="iint" placeholder="Ej: 20" min="0" max="100" step="0.5" inputmode="decimal" oninput="updP()" style="font-size:1.1rem;font-weight:700"/>
     </div>
   </div>
   <div class="fg"><label>¿Cuándo debe pagar?</label>
@@ -2267,7 +2257,7 @@ function openM(){
   // Reset simplified modal
   const da=document.getElementById('datos-adicionales');if(da)da.style.display='none';
   const ba=document.getElementById('btn-adicionales');if(ba)ba.textContent='▸ Datos adicionales (dirección, referencias, cuotas...)';
-  const isel=document.getElementById('iint_sel');if(isel){isel.value='20';const iv=document.getElementById('iint');if(iv){iv.value='20';iv.style.display='none';}}
+  const iv=document.getElementById('iint');if(iv)iv.value='20';
   document.querySelectorAll('.btn-venc-quick').forEach(b=>b.classList.remove('sel'));
   document.getElementById('modal-title').innerHTML='Nuevo <span>Préstamo</span>';
   document.getElementById('modal-save-btn').textContent='Guardar';
