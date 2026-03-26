@@ -2289,11 +2289,14 @@ function updP(){
   const total=a*(1+i/100),saldo=total-p;
   document.getElementById('preview').textContent=a?`Total: ${fmtE(total)} · Saldo: ${fmtE(saldo)} · Interés: ${fmtE(total-a)}`:'— ';
 }
-async function saveClient(){
+async async function saveClient(){
+  const btn=document.getElementById('modal-save-btn');
+  if(btn&&btn.disabled)return;
+  if(btn){btn.disabled=true;btn.textContent='Guardando...';}
   const nombre=document.getElementById('iname').value.trim();
   const monto=parseFloat(document.getElementById('iamt').value);
-  if(!nombre){showToast('⚠ Ingresa el nombre');return;}
-  if(!monto||monto<0){showToast('⚠ Monto inválido');return;}
+  if(!nombre){showToast('⚠ Ingresa el nombre');if(btn){btn.disabled=false;btn.textContent='Guardar préstamo';}return;}
+  if(!monto||monto<0){showToast('⚠ Monto inválido');if(btn){btn.disabled=false;btn.textContent='Guardar préstamo';}return;}
   const pct=parseFloat(document.getElementById('iint').value)||0;
   const pagado=parseFloat(document.getElementById('ipag').value)||0;
   const total=parseFloat((monto*(1+pct/100)).toFixed(2));
@@ -2303,8 +2306,9 @@ async function saveClient(){
     direccion:document.getElementById('idir').value,referido_por:document.getElementById('iref').value,
     ref_fam_nombre:document.getElementById('irfn').value,ref_fam_telefono:document.getElementById('irft').value,
     ref_trab_nombre:document.getElementById('irtn').value,ref_trab_telefono:document.getElementById('irtt').value,
-    fecha_prestamo:document.getElementById('ifecha').value||null,fecha_vencimiento:document.getElementById('ivenc').value||null,
-    plazo:document.getElementById('iplazo').value,monto,interes:pct,total,pagado,saldo,
+    fecha_prestamo:document.getElementById('ifecha').value||new Date().toISOString().slice(0,10),
+    fecha_vencimiento:document.getElementById('ivenc').value||null,
+    plazo:document.getElementById('iplazo').value||'Me',monto,interes:pct,total,pagado,saldo,
     cuotas:parseFloat(document.getElementById('icuotas').value)||0,cuotas_pagadas:parseFloat(document.getElementById('ictspag').value)||0,
     notas:document.getElementById('inotas').value,
     asesor:document.getElementById('iasesor')?.value||'',
@@ -2312,28 +2316,27 @@ async function saveClient(){
   showLoad();
   try{
     if(editId){
-      // On edit: adjust disponible by difference in monto
       const old=clientes.find(c=>c.id===editId);
-      const diff=(old?n(old.monto):0)-monto; // positive if loan decreased
-      if(!editId||diff!==0){
-        const newDisp=parseFloat((getCapitalDisponible()+diff).toFixed(2));
-        setCapitalDisponible(Math.max(0,newDisp));
-      }
+      const diff=(old?n(old.monto):0)-monto;
+      if(diff!==0){const newDisp=parseFloat((getCapitalDisponible()+diff).toFixed(2));setCapitalDisponible(Math.max(0,newDisp));}
       await db.from('clientes').update(obj).eq('id',editId);
       logActividad('edicion',`Préstamo editado: ${nombre}`,nombre,monto,{interes:pct});
       showToast('✓ Actualizado');
     } else {
-      // New loan: subtract monto from disponible
       const newDisp=parseFloat((getCapitalDisponible()-monto).toFixed(2));
       setCapitalDisponible(Math.max(0,newDisp));
       await db.from('clientes').insert([obj]);
       logActividad('prestamo',`Nuevo préstamo: ${nombre}`,nombre,null,monto,{interes:pct,total,plazo:obj.plazo});
-      showToast('✓ Préstamo guardado · Disponible: '+fmtE(Math.max(0,newDisp)));
+      showToast('✓ Préstamo guardado');
     }
     closeM();await loadAll();
-  }catch(e){showToast('Error: '+e.message);console.error(e);}
+  }catch(e){
+    showToast('Error al guardar: '+e.message);console.error(e);
+    if(btn){btn.disabled=false;btn.textContent='Guardar préstamo';}
+  }
   hideLoad();
 }
+
 
 // ══════════════════════════════════════
 //  ABONOS
