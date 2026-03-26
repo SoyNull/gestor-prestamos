@@ -62,6 +62,36 @@ body::before{content:"";position:fixed;width:600px;height:600px;background:radia
 .del-modal-btns{display:flex;gap:8px}
 .del-modal-cancel{flex:1;padding:12px;border-radius:11px;background:var(--sur2);border:1px solid var(--bor);color:var(--mut);font-family:"Syne",sans-serif;font-weight:700;font-size:.85rem;cursor:pointer}
 .del-modal-confirm{flex:1;padding:12px;border-radius:11px;background:rgba(255,68,102,.15);border:1px solid rgba(255,68,102,.4);color:var(--dan);font-family:"Syne",sans-serif;font-weight:800;font-size:.85rem;cursor:pointer}
+.btn-accion-p{padding:18px 10px;border-radius:14px;border:none;background:var(--acc);color:#000;font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.btn-accion-p:active{transform:scale(.97)}
+.btn-accion-s{padding:18px 10px;border-radius:14px;border:1.5px solid rgba(0,149,255,.5);background:rgba(0,149,255,.12);color:var(--acc2);font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.btn-accion-s:active{transform:scale(.97)}
+.dash-hero{background:var(--sur);border:1.5px solid rgba(0,229,160,.3);border-radius:var(--rad);padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.dash-hero-main{display:flex;flex-direction:column}
+.dash-hero-label{font-size:.65rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.dash-hero-val{font-size:2rem;font-weight:800;color:var(--acc);font-family:"DM Mono",monospace;line-height:1}
+.dash-stats{display:flex;gap:16px}
+.dash-stat{text-align:right}
+.dash-stat-label{font-size:.6rem;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.dash-stat-val{font-size:1.1rem;font-weight:800;font-family:"DM Mono",monospace}
+.abono-rapido-overlay{position:fixed;inset:0;background:rgba(0,0,0,.73);backdrop-filter:blur(6px);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.abono-rapido-overlay.open{display:flex}
+.abono-rapido-modal{background:var(--sur);border:1px solid var(--bor);border-radius:22px 22px 0 0;padding:20px 20px calc(20px + var(--safe));width:100%;max-width:580px;animation:su .26s cubic-bezier(.32,.72,0,1);max-height:90dvh;overflow-y:auto;color:var(--txt)}
+.ar-search{width:100%;padding:13px 14px;background:var(--bg);border:1.5px solid rgba(0,149,255,.4);border-radius:12px;color:var(--txt);font-family:"Syne",sans-serif;font-size:1rem;outline:none;margin-bottom:10px;-webkit-appearance:none}
+.ar-search:focus{border-color:var(--acc2)}
+.ar-results{display:flex;flex-direction:column;gap:5px;max-height:220px;overflow-y:auto;margin-bottom:10px}
+.ar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--sur2);border:1px solid var(--bor);border-radius:10px;cursor:pointer;transition:border-color .15s}
+.ar-item:active{border-color:var(--acc2)}
+.ar-item-name{font-size:.9rem;font-weight:700;flex:1;min-width:0}
+.ar-item-saldo{font-size:.8rem;font-family:"DM Mono",monospace;color:var(--dan);font-weight:700;flex-shrink:0}
+.ar-confirm{background:var(--sur2);border:1.5px solid rgba(0,229,160,.3);border-radius:12px;padding:14px;display:none}
+.ar-confirm.show{display:block}
+.ar-confirm-name{font-size:.95rem;font-weight:800;color:var(--txt);margin-bottom:4px}
+.ar-confirm-saldo{font-size:.75rem;color:var(--mut);margin-bottom:12px}
+.ar-monto-input{width:100%;padding:14px;background:var(--bg);border:1.5px solid rgba(0,229,160,.3);border-radius:10px;color:var(--acc);font-family:"DM Mono",monospace;font-size:1.6rem;font-weight:700;outline:none;text-align:center;margin-bottom:10px;-webkit-appearance:none}
+.ar-monto-input:focus{border-color:var(--acc)}
+.ar-save-btn{width:100%;padding:14px;background:var(--acc);border:none;border-radius:12px;color:#000;font-family:"Syne",sans-serif;font-weight:800;font-size:1rem;cursor:pointer}
+.ar-save-btn:active{background:#00c886}
 .dup-warning{background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.3);border-radius:11px;padding:11px 13px;margin-bottom:10px;display:none}
 .dup-warning.show{display:block}
 .dup-warning-title{font-size:.75rem;font-weight:800;color:var(--gld);margin-bottom:8px}
@@ -562,18 +592,20 @@ select option{background:var(--sur)}
 
   <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
-    <!-- Capital rotativo banner -->
-    <div class="capital-banner" id="cap-banner"></div>
-    <!-- Stats bar estilo Carteras Manager -->
-    <div class="stats-bar" id="stats-row"></div>
-    <!-- Alerta vencidos colapsable -->
+    <div id="dash-hero"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <button class="btn-accion-p" onclick="openM()">➕ Nuevo préstamo</button>
+      <button class="btn-accion-s" onclick="openAbonoRapido()">💰 Abonar</button>
+    </div>
     <div id="vencidos-alert" style="display:none" class="alert-venc">
       <div class="alert-venc-title">
-        <span>⚠ Vencimientos y acuerdos urgentes</span>
+        <span>⚠ Pendientes de abonar</span>
         <button onclick="window.__alertExpanded=!window.__alertExpanded;renderVencidosAlert()" id="alert-toggle-btn" style="background:transparent;border:none;color:var(--dan);font-size:.72rem;cursor:pointer;font-family:Syne,sans-serif;font-weight:700"></button>
       </div>
       <div id="vencidos-list"></div>
     </div>
+    <div class="capital-banner" id="cap-banner" style="display:none"></div>
+    <div class="stats-bar" id="stats-row" style="display:none"></div>
   </div>
 
   <!-- ESTADÍSTICAS -->
@@ -1006,6 +1038,22 @@ select option{background:var(--sur)}
  </div>
 </div>
 
+<!-- MODAL ABONAR RÁPIDO -->
+<div class="abono-rapido-overlay" id="abono-rapido-overlay" onclick="if(event.target===this)closeAbonoRapido()">
+  <div class="abono-rapido-modal">
+    <div class="handle"></div>
+    <div class="mtitle">Registrar <span>abono</span></div>
+    <input class="ar-search" id="ar-search-input" type="text" placeholder="¿Quién va a abonar?" autocomplete="off" oninput="filtrarAbonoRapido(this.value)"/>
+    <div class="ar-results" id="ar-results"></div>
+    <div class="ar-confirm" id="ar-confirm">
+      <div class="ar-confirm-name" id="ar-confirm-name">—</div>
+      <div class="ar-confirm-saldo" id="ar-confirm-saldo">Saldo pendiente: —</div>
+      <input class="ar-monto-input" id="ar-monto-input" type="number" inputmode="decimal" placeholder="€0" />
+      <button class="ar-save-btn" onclick="guardarAbonoRapido()">✓ Confirmar abono</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL BORRAR CONFIRMACION -->
 <div class="del-modal-overlay" id="del-modal-overlay">
   <div class="del-modal">
@@ -1392,6 +1440,7 @@ function sortBy(field){
 function render(){
   renderStats();
   renderCapitalBanner();
+  renderDashHero();
   renderClientes();
   renderCharts();
   renderVencidosAlert();
@@ -1478,28 +1527,30 @@ function renderCapitalBanner(){
 
 // ── ALERTA VENCIDOS COLAPSABLE ────────────
 function renderVencidosAlert(){
-  const proxAcuerdos=acuerdos.filter(a=>!a.cumplido&&daysUntil(a.fecha_limite)<=5&&daysUntil(a.fecha_limite)>=0);
+  const vencidos=clientes.filter(c=>getStatus(c)!=='pagado'&&daysUntil(c.fecha_vencimiento)<0&&c.fecha_vencimiento)
+    .sort((a,b)=>new Date(a.fecha_vencimiento)-new Date(b.fecha_vencimiento));
   const proxVenc=clientes.filter(c=>getStatus(c)!=='pagado'&&daysUntil(c.fecha_vencimiento)<=3&&daysUntil(c.fecha_vencimiento)>=0&&c.fecha_vencimiento);
-  const vencidos=clientes.filter(c=>getStatus(c)!=='pagado'&&daysUntil(c.fecha_vencimiento)<0&&c.fecha_vencimiento);
-  const all=[
-    ...vencidos.map(c=>({icon:'🚨',text:`VENCIDO: <b>${c.nombre}</b> — ${fmtDate(c.fecha_vencimiento)} · Saldo: ${fmtE(c.saldo)}`,urgent:true})),
-    ...proxVenc.map(c=>({icon:'⏰',text:`Vence en <b>${daysUntil(c.fecha_vencimiento)}d</b>: ${c.nombre}`,urgent:false})),
-    ...proxAcuerdos.map(a=>({icon:'📅',text:`Acuerdo en <b>${daysUntil(a.fecha_limite)}d</b>: ${a.clientes?.nombre||''}`,urgent:false}))
-  ];
   const el=document.getElementById('vencidos-alert');
-  if(!all.length){el.style.display='none';return;}
+  if(!vencidos.length&&!proxVenc.length){el.style.display='none';return;}
   el.style.display='block';
-  const SHOW=4,expanded=window.__alertExpanded;
-  const visible=expanded?all:all.slice(0,SHOW);
-  const rest=all.length-SHOW;
+  const SHOW=6,expanded=window.__alertExpanded;
+  const visible=expanded?vencidos:vencidos.slice(0,SHOW);
+  const rest=vencidos.length-SHOW;
   const btn=document.getElementById('alert-toggle-btn');
-  if(btn)btn.textContent=all.length>SHOW?(expanded?`▲ Ver menos`:`▼ +${rest} más (${all.length} total)`):'';
+  if(btn)btn.textContent=vencidos.length>SHOW?(expanded?'▲ Ver menos':'▼ +'+rest+' más ('+vencidos.length+' total)'):'';
   document.getElementById('vencidos-list').innerHTML=
-    `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:3px 16px">`+
-    visible.map(t=>`<div style="font-size:.72rem;color:${t.urgent?'var(--dan)':'var(--txt)'};padding:2px 0">
-      ${t.icon} ${t.text}</div>`).join('')+'</div>';
+    '<div style="display:flex;flex-direction:column;gap:4px">'+
+    visible.map(c=>{
+      const dias=Math.abs(daysUntil(c.fecha_vencimiento));
+      const nom=c.nombre.length>28?c.nombre.slice(0,26)+'…':c.nombre;
+      return '<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(30,42,58,.4)">'+
+        '<span style="font-size:.7rem;font-weight:700;color:var(--dan);min-width:42px;flex-shrink:0">'+dias+'d</span>'+
+        '<span style="flex:1;font-size:.82rem;font-weight:700;color:var(--txt)">'+nom+'</span>'+
+        '<span style="font-size:.82rem;font-weight:800;font-family:\'DM Mono\',monospace;color:var(--dan)">'+fmtE(Math.max(0,n(c.saldo)))+'</span>'+
+        '</div>';
+    }).join('')+'</div>'+
+    (proxVenc.length?'<div style="margin-top:7px;padding-top:6px;border-top:1px solid var(--bor);font-size:.69rem;color:var(--gld);font-weight:700">⏰ Vencen pronto: '+proxVenc.map(c=>c.nombre.split(' ')[0]).join(', ')+'</div>':'');
 }
-
 // ── TABLA CLIENTES ────────────────────────
 function renderClientes(){
   const total=filteredClientes.length;
@@ -1763,7 +1814,7 @@ function renderMensual(){
     <div class="men-kpi" style="--kc:var(--acc)"><div class="men-kpi-label">Total Prestado</div><div class="men-kpi-val">${fmtE(totAmt)}</div><div class="men-kpi-sub">${clientes.length} clientes</div></div>
     <div class="men-kpi" style="--kc:var(--gld)"><div class="men-kpi-label">Utilidad al Mes</div><div class="men-kpi-val">${fmtE(totI)}</div><div class="men-kpi-sub">intereses generados</div></div>
     <div class="men-kpi" style="--kc:var(--acc2)"><div class="men-kpi-label">Total Cobrado</div><div class="men-kpi-val">${fmtE(totPag)}</div><div class="men-kpi-sub">cobrado hasta hoy</div></div>
-    <div class="men-kpi" style="--kc:var(--dan)"><div class="men-kpi-label">Por Cobrar</div><div class="men-kpi-val">${fmtE(totSaldo)}</div><div class="men-kpi-sub">saldo pendiente</div></div>`;
+    <div class="men-kpi" style="--kc:var(--dan)"><div class="men-kpi-label">Por Abonar</div><div class="men-kpi-val">${fmtE(totSaldo)}</div><div class="men-kpi-sub">saldo pendiente</div></div>`;
   const grps={};clientes.forEach(c=>{const k=c.interes;if(!grps[k])grps[k]={pct:k,n:0,cap:0,int:0};grps[k].n++;grps[k].cap+=n(c.monto);grps[k].int+=n(c.total)-n(c.monto);});
   const sorted=Object.values(grps).sort((a,b)=>b.cap-a.cap);
   const rEl=document.getElementById('men-rows');if(!rEl)return;
@@ -2055,6 +2106,55 @@ function showDupWarning(c){
 function hideDupWarning(){ const w = document.getElementById('dup-warning'); if(w) w.classList.remove('show'); }
 function ignoreDuplicate(){ dupIgnored = true; hideDupWarning(); }
 function useDupClient(id){ hideDupWarning(); selectExistingClient(id); }
+
+// ── DASHBOARD HERO ────────────────────────
+function renderDashHero(){
+  const el=document.getElementById('dash-hero');if(!el)return;
+  const disponible=getCapitalDisponible();
+  const saldo=clientes.reduce((s,c)=>s+Math.max(0,n(c.saldo)),0);
+  const venc=clientes.filter(c=>getStatus(c)!=='pagado'&&daysUntil(c.fecha_vencimiento)<0&&c.fecha_vencimiento).length;
+  el.innerHTML=`<div class="dash-hero"><div class="dash-hero-main"><div class="dash-hero-label">Disponible para prestar</div><div class="dash-hero-val">${fmtE(disponible)}</div></div><div class="dash-stats"><div class="dash-stat"><div class="dash-stat-label">Por abonar</div><div class="dash-stat-val" style="color:var(--dan)">${fmtE(saldo)}</div></div><div class="dash-stat" style="margin-left:14px"><div class="dash-stat-label">Vencidos</div><div class="dash-stat-val" style="color:var(--dan)">${venc}</div></div></div></div>`;
+}
+
+// ── ABONAR RÁPIDO ─────────────────────────
+let abonoRapidoId=null;
+function openAbonoRapido(){
+  abonoRapidoId=null;
+  const inp=document.getElementById('ar-search-input');if(inp)inp.value='';
+  const conf=document.getElementById('ar-confirm');if(conf)conf.classList.remove('show');
+  filtrarAbonoRapido('');
+  document.getElementById('abono-rapido-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('ar-search-input')?.focus(),120);
+}
+function closeAbonoRapido(){ document.getElementById('abono-rapido-overlay').classList.remove('open'); }
+function filtrarAbonoRapido(q){
+  const res=document.getElementById('ar-results');if(!res)return;
+  const conf=document.getElementById('ar-confirm');if(conf)conf.classList.remove('show');
+  abonoRapidoId=null;
+  const ql=q.toLowerCase().trim();
+  let lista=clientes.filter(c=>getStatus(c)!=='pagado').sort((a,b)=>daysUntil(a.fecha_vencimiento)-daysUntil(b.fecha_vencimiento));
+  if(ql.length>1)lista=lista.filter(c=>c.nombre.toLowerCase().includes(ql));else lista=lista.slice(0,8);
+  res.innerHTML=lista.map(c=>{
+    const dias=daysUntil(c.fecha_vencimiento),venc=dias!==null&&dias<0,col=colFor(c);
+    const nom=c.nombre.length>30?c.nombre.slice(0,28)+'…':c.nombre;
+    return`<div class="ar-item" onclick="seleccionarAbonoRapido('${c.id}')"><div style="width:36px;height:36px;border-radius:50%;background:${col[0]};color:${col[1]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;flex-shrink:0">${ini(c.nombre)}</div><div class="ar-item-name">${nom}${venc?` <span style="font-size:.65rem;color:var(--dan)">${Math.abs(dias)}d</span>`:''}</div><div class="ar-item-saldo">${fmtE(Math.max(0,n(c.saldo)))}</div></div>`;
+  }).join('');
+}
+function seleccionarAbonoRapido(id){
+  const c=clientes.find(x=>x.id===id);if(!c)return;
+  abonoRapidoId=id;
+  document.getElementById('ar-confirm-name').textContent=c.nombre;
+  document.getElementById('ar-confirm-saldo').textContent='Saldo pendiente: '+fmtE(Math.max(0,n(c.saldo)));
+  const inp=document.getElementById('ar-monto-input');if(inp){inp.value=Math.max(0,n(c.saldo));inp.focus();}
+  document.getElementById('ar-results').innerHTML='';
+  document.getElementById('ar-confirm').classList.add('show');
+}
+async function guardarAbonoRapido(){
+  if(!abonoRapidoId)return;
+  const monto=parseFloat(document.getElementById('ar-monto-input').value)||0;
+  if(monto<=0){showToast('⚠ Ingresa un monto');return;}
+  closeAbonoRapido();payId=abonoRapidoId;document.getElementById('pay-amt').value=monto;await savePay();
+}
 
 function selectExistingClient(id){
   const c = clientes.find(x=>x.id===id);
