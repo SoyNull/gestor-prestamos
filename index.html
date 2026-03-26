@@ -1641,6 +1641,7 @@ function renderClientes(){
           <div class="mactions">
             <button class="mbtn-pay" onclick="openPay('${c.id}')">💰 Abonar</button>
             <button class="mbtn-view" onclick="openDet('${c.id}')">Ver perfil</button>
+            <button onclick="confirmDel('${c.id}')" style="padding:8px 10px;border-radius:9px;border:1px solid rgba(255,68,102,.35);background:rgba(255,68,102,.1);color:var(--dan);font-size:.85rem;cursor:pointer;flex-shrink:0" title="Eliminar">🗑</button>
           </div>
         </div></div>`;
     }).join('');
